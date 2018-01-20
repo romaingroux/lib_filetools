@@ -1,0 +1,30 @@
+# compilation flags
+ccflags = "-std=c++11 -O2 -Wall -Wextra -Werror -Wfatal-errors -pedantic -I ./res/include"
+
+# a path which should be added to all include directive to make them correct
+cpppath = "../src/"
+
+# library to use and the library path
+libs      = ['libUnitTest++']
+libs_path = "/usr/local/lib"
+
+# Source files:
+sgafile_src    = Glob("SGAFile/*.cpp")
+fastafile_src  = Glob("FASTAFile/*.cpp")
+configfile_src = Glob("Random/*.cpp")
+test_src       = Glob("Unittests/*.cpp")
+
+# Source file containing main()
+test_main_src  = Glob("unittests.cpp")
+
+# compilation instructions for every module
+sgafile_obj    = Object(sgafile_src,    CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
+fastafile_obj  = Object(fastafile_src,  CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
+configfile_obj = Object(configfile_src, CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
+test_obj       = Object(test_src,       CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
+test_main_obj  = Object(test_main_src,  CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
+
+# unittest program compilation
+Program("unittests", test_obj + sgafile_obj + fastafile_obj, CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
+# static library
+StaticLibrary("FileTools", sgafile_obj + fastafile_obj + configfile_obj)
