@@ -1,5 +1,5 @@
 #include <UnitTest++/UnitTest++.h>
-
+#include <iostream>
 #include <string>
 #include <stdexcept>
 
@@ -481,7 +481,8 @@ SUITE(SGA_element_testsuit)
 
     // tests empty constructor
     TEST(TestSGA_element_empty_constructor)
-    {   // get field values
+    {   std::cerr << "test 1" << std::endl ;
+        // get field values
         std::string value_chr      = sga0.chromosome ;
         std::string value_feature  = sga0.feature ;
         std::string value_strand   = sga0.strand ;
@@ -497,7 +498,8 @@ SUITE(SGA_element_testsuit)
 
     // test string constructor
     TEST(TestSGA_element_string_constructor_1)
-    {   // get field values
+    {   std::cerr << "test 2" << std::endl ;
+        // get field values
         std::string value_chr     = sga1.chromosome ;
         std::string value_feature = sga1.feature ;
         std::string value_strand  = sga1.strand ;
@@ -513,7 +515,8 @@ SUITE(SGA_element_testsuit)
 
     // test string constructor
     TEST(TestSGA_element_string_constructor_2)
-    {   // get field values
+    {   std::cerr << "test 3" << std::endl ;
+        // get field values
         std::string value_chr     = sga2.chromosome ;
         std::string value_feature = sga2.feature ;
         std::string value_strand  = sga2.strand ;
@@ -529,7 +532,8 @@ SUITE(SGA_element_testsuit)
 
     // test value constructor
     TEST(TestSGA_element_value_constructor)
-    {   // get field values
+    {   std::cerr << "test 4" << std::endl ;
+        // get field values
         std::string value_chr     = sga4.chromosome ;
         std::string value_feature = sga4.feature ;
         std::string value_strand  = sga4.strand ;
@@ -545,14 +549,16 @@ SUITE(SGA_element_testsuit)
 
     // test == operator
     TEST(TestSGA_element_equality_operator)
-    {   CHECK_EQUAL(sga1 == sga2, false) ;
+    {   std::cerr << "test 5" << std::endl ;
+        CHECK_EQUAL(sga1 == sga2, false) ;
         CHECK_EQUAL(sga2 == sga3, false) ;
         CHECK_EQUAL(sga2 == sga4, true) ;
     }
 
     // test get_distance
     TEST(TestSGA_element_get_distance_1)
-    {   int error_byte = 0 ;
+    {   std::cerr << "test 6" << std::endl ;
+        int error_byte = 0 ;
         int dist       = 0 ;
 
         // this distance makes no sense (because sga1 and sga2 on diff chromosomes) and error byte should be 1
@@ -746,12 +752,5 @@ SUITE(SGAFileReader_testsuit)
         // check constructor
         CHECK_THROW(SGAFileReader sga_reader2(f_wrong_address), std::runtime_error) ;
     }
-}
-
-
-// run all tests
-int main()
-{
-    return UnitTest::RunAllTests();
 }
 

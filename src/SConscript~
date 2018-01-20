@@ -10,6 +10,7 @@ libs_path = "/usr/local/lib"
 
 # Source files:
 sgafile_src    = Glob("SGAFile/*.cpp")
+filereader_src = Glob("FileReader/*.cpp")
 fastafile_src  = Glob("FASTAFile/*.cpp")
 configfile_src = Glob("Random/*.cpp")
 test_src       = Glob("Unittests/*.cpp")
@@ -18,6 +19,7 @@ test_src       = Glob("Unittests/*.cpp")
 test_main_src  = Glob("unittests.cpp")
 
 # compilation instructions for every module
+filreader_obj  = Object(filereader_src, CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
 sgafile_obj    = Object(sgafile_src,    CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
 fastafile_obj  = Object(fastafile_src,  CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
 configfile_obj = Object(configfile_src, CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
@@ -27,4 +29,4 @@ test_main_obj  = Object(test_main_src,  CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=l
 # unittest program compilation
 Program("unittests", test_obj + sgafile_obj + fastafile_obj, CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
 # static library
-StaticLibrary("FileTools", sgafile_obj + fastafile_obj + configfile_obj)
+StaticLibrary("FileTools", sgafile_obj + fastafile_obj + configfile_obj, CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)

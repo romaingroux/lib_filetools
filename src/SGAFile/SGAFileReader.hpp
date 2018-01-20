@@ -1,44 +1,51 @@
 #ifndef SGAFILEREADER_H
 #define SGAFILEREADER_H
 
-// for file reading
-#define BUFFER_SIZE 4096
-
-#include <stdlib.h>
 #include <string>
 #include <iostream>
 #include <fstream>
-#include "SGAFile/SGA_element.hpp"
+#include "SGA_element.hpp"
+#include "FileReader/FileReader.hpp"
 
-class SGAFileReader
-{   /*  A class to handle connection and data fetching from SGA files. This class works with the class SGA_element. */
 
+/*!
+ * \brief The SGAFIleReader class handles connection and data fetching
+ * from SGA files. This class uses the class SGA_element.
+ */
+class SGAFileReader : public FileReader
+{
     public:
 
         // **** methods ****
+        /*!
+         * \brief Construct a non-connected instance.
+         * Connection can be established later using set_file()
+         */
         SGAFileReader() ;
-        SGAFileReader(std::string sga_file_address) ;
-        ~SGAFileReader();
+        /*!
+         * \brief Construct an instance connected to a SGA file.
+         * \param sga_file_address the SGA file address.
+         */
+        SGAFileReader(const std::string& sga_file_address) ;
 
-        void         set_file(std::string sga_file_address) ;
+        virtual ~SGAFileReader() override ;
 
-        SGA_element* get_next() ;
-        void         close() ;
+        /*!
+         * \brief This method returns the next SGA line
+         * in _f_seq compared to the current file pointer
+         * position. The returned SGA_element will need to be
+         * deleted to avoid memory leaks.
+         * \throw runtime_error upon an attempt to read from a closed file.
+         * \return a pointer to a dynamically allocated
+         * SGA_element. If no line could be read from the
+         * file, nullptr is returned.
+         */
+        SGA_element* get_next() throw (std::runtime_error);
 
     private:
         // *** methods ****
-        // handle stream opening
-        void open() throw (std::runtime_error) ;
 
         // **** fields ****
-        // the SGA file address
-        std::string _f_sga_address;
-        // a stream to the SGA file
-        std::ifstream _f_sga ;
-        // whether the connection is open
-        bool _f_sga_open ;
-        // a buffer to read from the file
-        char _buffer[BUFFER_SIZE] ;
 } ;
 
 #endif // SGAFILEREADER_H
