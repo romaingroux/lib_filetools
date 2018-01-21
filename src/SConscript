@@ -27,6 +27,6 @@ test_obj       = Object(test_src,       CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=l
 test_main_obj  = Object(test_main_src,  CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
 
 # unittest program compilation
-Program("unittests", test_obj + filreader_obj + sgafile_obj + fastafile_obj, CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
+Program("unittests", test_main_obj + test_obj + filreader_obj + sgafile_obj + fastafile_obj, CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
 # static library
 StaticLibrary("FileTools", filreader_obj + sgafile_obj + fastafile_obj + configfile_obj, CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
