@@ -56,6 +56,16 @@ class FileReader
          */
         void open() throw (std::runtime_error) ;
 
+        /*!
+         * \brief Modifies the position of the pointer within the file.
+         * \param pos the new wanted position of the pointer in the
+         * file.
+         * \param way the reference to set pos from, i.e. ios_base::beg,
+         * ios_base::cur, ios_base::end
+         * \throw runtime_error upon an attempt to seek on a closed file.
+         */
+        void seek(size_t pos, std::ios_base::seekdir way) throw (std::runtime_error);
+
         // **** fields ****
         /*!
          * \brief the SGA file address.

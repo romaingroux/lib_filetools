@@ -66,10 +66,10 @@ throw (std::runtime_error)
 
     // read file until finding the good chrosome header
     bool found_seq = false ;
-    while(this->_f.getline(_buffer, BUFFER_SIZE))
+    while(this->_f.getline(this->_buffer, BUFFER_SIZE))
     {   // this line is a header line
-        if('>' == _buffer[0])
-        {   std::string header_line(_buffer) ;
+        if('>' == this->_buffer[0])
+        {   std::string header_line(this->_buffer) ;
             if(exact_match)
             {   // in the header, searches for an exact match of header_match. The header is expected to be formatted as
                 // ">[...]header_match [...]" Thus search for header_match and a space (' '). The delimited substring
@@ -77,7 +77,7 @@ throw (std::runtime_error)
                 // example of an exact match
                 // header_match : "NC_000001.10"
                 // header_line :  ">chr|NC_000001|NC_000001.10 Chromosome 1; [Homo sapiens] ..."
-                std::string header_line(_buffer) ;
+                std::string header_line(this->_buffer) ;
                 size_t start = header_line.find(header_match) ;
                 size_t end   = header_line.find(" ") ;
                 // the header conforms to the searched format
@@ -157,11 +157,11 @@ FASTA_element* FASTAFileReader::get_next() throw (std::runtime_error)
     bool header_found = false ;
     bool seq_found = false ;
     // get the header
-    while(this->_f.getline(_buffer, BUFFER_SIZE))
+    while(this->_f.getline(this->_buffer, BUFFER_SIZE))
     {   // looking for a header
         if(not header_found)
         {   // header found, this is an entry to be returned
-            if(_buffer[0] == '>')
+            if(this->_buffer[0] == '>')
             {   // allocate memory for the FASTA_element to be returned
                 fasta_element = new FASTA_element() ;
                 // reserve memory for the sequence
@@ -171,7 +171,7 @@ FASTA_element* FASTAFileReader::get_next() throw (std::runtime_error)
                     fasta_element->sequence_one_based = true ;
                 }
                 // store header
-                fasta_element->header = _buffer ;
+                fasta_element->header = this->_buffer ;
                 header_found = true ;
                 // leave the file pointer here,
                 break ;
@@ -200,20 +200,9 @@ bool FASTAFileReader::get_sequence(FASTA_element& fasta_element)
     bool seq_found = false ;
     while(this->_f and (this->_f.peek() != '>'))
     {   seq_found = true ;
-        this->_f.getline(_buffer, BUFFER_SIZE) ;
-        fasta_element.sequence += _buffer ;
+        this->_f.getline(this->_buffer, BUFFER_SIZE) ;
+        fasta_element.sequence += this->_buffer ;
     }
     return seq_found ;
-}
-
-
-void FASTAFileReader::seek(size_t pos, std::ios_base::seekdir way) throw (std::runtime_error)
-{   if(not this->is_open())
-    {   char msg[512] ;
-         sprintf(msg, "FASTAFileReader error! Attempt to read file %s which is closed!", this->get_file().c_str()) ;
-        throw std::runtime_error(msg) ;
-    }
-    this->_f.clear() ;
-    this->_f.seekg(pos, way) ;
 }
 

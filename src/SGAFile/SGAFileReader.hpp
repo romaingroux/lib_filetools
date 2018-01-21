@@ -36,11 +36,13 @@ class SGAFileReader : public FileReader
          * position. The returned SGA_element will need to be
          * deleted to avoid memory leaks.
          * \throw runtime_error upon an attempt to read from a closed file.
+         * \throw invalid_argument when a SGA_element cannot be build with
+         * what is read from the file.
          * \return a pointer to a dynamically allocated
          * SGA_element. If no line could be read from the
          * file, nullptr is returned.
          */
-        SGA_element* get_next() throw (std::runtime_error);
+        SGA_element* get_next() throw (std::runtime_error, std::invalid_argument);
 
     private:
         // *** methods ****

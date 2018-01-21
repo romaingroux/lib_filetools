@@ -13,7 +13,7 @@ SGAFileReader::~SGAFileReader()
 {   this->close() ; }
 
 
-SGA_element* SGAFileReader::get_next() throw (std::runtime_error)
+SGA_element* SGAFileReader::get_next() throw (std::runtime_error, std::invalid_argument)
 {   // file is not open
     if(not this->is_open())
     {   char msg[512] ;
@@ -25,7 +25,15 @@ SGA_element* SGAFileReader::get_next() throw (std::runtime_error)
 
     this->_f.getline(this->_buffer, BUFFER_SIZE) ;
     if(this->_f)
-    {   sga_element = new SGA_element(this->_buffer) ; }
-
+    {   // SGA_element constructor can throw invalid_argument exceptions
+        try
+        {   sga_element = new SGA_element(this->_buffer) ; }
+        catch(std::invalid_argument e)
+        {   delete sga_element ;
+            if(sga_element != nullptr)
+            {   delete sga_element ; }
+            throw e ;
+        }
+    }
     return sga_element ;
 }

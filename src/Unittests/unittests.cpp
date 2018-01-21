@@ -481,8 +481,7 @@ SUITE(SGA_element_testsuit)
 
     // tests empty constructor
     TEST(TestSGA_element_empty_constructor)
-    {   std::cerr << "test 1" << std::endl ;
-        // get field values
+    {   // get field values
         std::string value_chr      = sga0.chromosome ;
         std::string value_feature  = sga0.feature ;
         std::string value_strand   = sga0.strand ;
@@ -498,8 +497,7 @@ SUITE(SGA_element_testsuit)
 
     // test string constructor
     TEST(TestSGA_element_string_constructor_1)
-    {   std::cerr << "test 2" << std::endl ;
-        // get field values
+    {   // get field values
         std::string value_chr     = sga1.chromosome ;
         std::string value_feature = sga1.feature ;
         std::string value_strand  = sga1.strand ;
@@ -515,8 +513,7 @@ SUITE(SGA_element_testsuit)
 
     // test string constructor
     TEST(TestSGA_element_string_constructor_2)
-    {   std::cerr << "test 3" << std::endl ;
-        // get field values
+    {   // get field values
         std::string value_chr     = sga2.chromosome ;
         std::string value_feature = sga2.feature ;
         std::string value_strand  = sga2.strand ;
@@ -532,8 +529,7 @@ SUITE(SGA_element_testsuit)
 
     // test value constructor
     TEST(TestSGA_element_value_constructor)
-    {   std::cerr << "test 4" << std::endl ;
-        // get field values
+    {   // get field values
         std::string value_chr     = sga4.chromosome ;
         std::string value_feature = sga4.feature ;
         std::string value_strand  = sga4.strand ;
@@ -549,16 +545,14 @@ SUITE(SGA_element_testsuit)
 
     // test == operator
     TEST(TestSGA_element_equality_operator)
-    {   std::cerr << "test 5" << std::endl ;
-        CHECK_EQUAL(sga1 == sga2, false) ;
+    {   CHECK_EQUAL(sga1 == sga2, false) ;
         CHECK_EQUAL(sga2 == sga3, false) ;
         CHECK_EQUAL(sga2 == sga4, true) ;
     }
 
     // test get_distance
     TEST(TestSGA_element_get_distance_1)
-    {   std::cerr << "test 6" << std::endl ;
-        int error_byte = 0 ;
+    {   int error_byte = 0 ;
         int dist       = 0 ;
 
         // this distance makes no sense (because sga1 and sga2 on diff chromosomes) and error byte should be 1
@@ -598,8 +592,7 @@ SUITE(SGAFileReader_testsuit)
 
     // this test read a fine SGA file
     TEST(SGA_OK)
-    {   std::cerr << "test 7" << std::endl ;
-        sga_reader.set_file(f_ok) ;
+    {   sga_reader.set_file(f_ok) ;
         SGA_element sga1("chr1", "Test", 1, "+", 1) ;
         SGA_element sga2("chr1", "Test", 2, "-", 2) ;
         SGA_element sga3("chr1", "Test", 3, "0", 1) ;
@@ -618,8 +611,7 @@ SUITE(SGAFileReader_testsuit)
 
     // this test reads an empty SGA file
     TEST(SGA_empty)
-    {   std::cerr << "test 8" << std::endl ;
-        sga_reader.set_file(f_empty) ;
+    {   sga_reader.set_file(f_empty) ;
         SGA_element* sga = nullptr ;
 
         // an null ptr is supposed to be returned immediatley as the file is empty
@@ -633,30 +625,22 @@ SUITE(SGAFileReader_testsuit)
 
     // this test reads a file containing an 2nd empty line, this should raise a invalid_argument exception
     TEST(SGA_empty_line)
-    {   std::cerr << "test 9" << std::endl ;
-        SGA_element* sga = nullptr ;
+    {   SGA_element* sga = nullptr ;
         sga_reader.set_file(f_empty_line) ;
 
         // 1st line is OK
         SGA_element sga1("chr1", "Test", 1, "+", 1) ;
-        std::cerr << "test 9.1" << std::endl ;
         sga = sga_reader.get_next() ;
         CHECK_EQUAL(true, sga1 == *sga) ;
         delete sga ;
-        std::cerr << "test 9.2" << std::endl ;
         // 2nd line reading should trigger an exception
         // it seems the invalide_argument exception is thrown but not caught here...
-        try
-        {   CHECK_THROW(sga = sga_reader.get_next(), std::invalid_argument) ; }
-        catch(std::exception e)
-        {   std::cerr << "invalid_argument catch" << std::endl ; }
-        std::cerr << "test 9.3" << std::endl ;
+        CHECK_THROW(sga = sga_reader.get_next(), std::invalid_argument) ;
     }
 
     // this tets reads files containing a position field <=0 which should raise a invalid_argument exception
     TEST(SGA_position_bad)
-    {   std::cerr << "test 10" << std::endl ;
-        // 1st file contains a postion equal to 0
+    {   // 1st file contains a postion equal to 0
         SGA_element* sga = nullptr ;
         sga_reader.set_file(f_position_bad1) ;
         // 1st line is OK
@@ -683,8 +667,7 @@ SUITE(SGAFileReader_testsuit)
 
     // this test reads files containing a count field <=0 which should raise a invalid_argument exception
     TEST(SGA_count_bad)
-    {   std::cerr << "test 11" << std::endl ;
-        // 1st file contains a postion equal to 0
+    {   // 1st file contains a postion equal to 0
         SGA_element* sga = nullptr ;
         sga_reader.set_file(f_count_bad1) ;
         // 1st line is OK
@@ -711,8 +694,7 @@ SUITE(SGAFileReader_testsuit)
 
     // this test reads a file containing a strand field with a value  different than -/+/0 which should raise a invalid_argument exception
     TEST(SGA_strand_bad)
-    {   std::cerr << "test 12" << std::endl ;
-        SGA_element* sga = nullptr ;
+    {   SGA_element* sga = nullptr ;
         sga_reader.set_file(f_count_bad1) ;
         // 1st line is OK
         SGA_element sga1("chr1", "Test", 1, "+", 1) ;
@@ -725,8 +707,7 @@ SUITE(SGAFileReader_testsuit)
 
     // this test reads 5 files containing each a line which misses a field
     TEST(SGA_missing_field)
-    {   std::cerr << "test 13" << std::endl ;
-        SGA_element* sga = nullptr ;
+    {   SGA_element* sga = nullptr ;
 
         // 1st file, 1st line misses the chromosome field
         sga_reader.set_file(f_missing_field1) ;
@@ -759,8 +740,7 @@ SUITE(SGAFileReader_testsuit)
 
     // this test attempt to read a file which does not exist which should raise a runtime_error exception
     TEST(SGA_wrong_address)
-    {   std::cerr << "test 14" << std::endl ;
-        // check the set_file method
+    {   // check the set_file method
         CHECK_THROW(sga_reader.set_file(f_wrong_address), std::runtime_error) ;
         // check constructor
         CHECK_THROW(SGAFileReader sga_reader2(f_wrong_address), std::runtime_error) ;
