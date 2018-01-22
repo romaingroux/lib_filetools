@@ -9,6 +9,7 @@
 // for file reading
 #define BUFFER_SIZE 4096
 
+
 /*!
  * \brief The FileReader class is an interface to subclass for other classes dedicated
  * to specific file format reading.

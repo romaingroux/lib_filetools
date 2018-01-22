@@ -1,5 +1,41 @@
 #include "ConfigFile/ConfigFileReader.hpp"
 
+
+std::ostream& operator << (std::ostream& o, const section_map& map)
+{	for(auto it = map.begin(); it != map.end(); ++it)
+    {	o << "section " << (*it).first << std::endl ;
+        for(auto it2 = (*it).second.begin() ; it2 != (*it).second.end() ; ++it2)
+        {	o << "   option " << (*it2).first << " " << (*it2).second << std::endl ;
+        }
+    }
+    return o ;
+}
+
+
+bool stobool(const std::string& s) throw (std::invalid_argument)
+{   // false
+    if((s == "0") or
+       (s == "False") or
+       (s == "false") or
+       (s == "Off") or
+       (s == "off"))
+    {   return false ; }
+    // true
+    else if((s == "1") or
+            (s == "True") or
+            (s == "true") or
+            (s == "On") or
+            (s == "on"))
+    {   return true ; }
+    // error
+    else
+    {   char msg[512] ;
+        sprintf(msg, "Error! Cannot convert %s to bool, unrecognized value!", s.c_str()) ;
+        throw std::invalid_argument(msg) ;
+    }
+}
+
+
 ConfigFileReader::ConfigFileReader()
     : _map()
 {}
@@ -9,9 +45,7 @@ ConfigFileReader::ConfigFileReader(const std::string& file_adresse)
     : ConfigFileReader()
 {   this->set_file(file_adresse) ;
     // read file
-    std::cerr << "test1" << std::endl ;
     this->read_file() ;
-    std::cerr << "test2" << std::endl ;
     // close file
     this->close() ;
 }
@@ -34,7 +68,8 @@ bool ConfigFileReader::has_option(const std::string& section, const std::string&
     return false ;
 }
 
-
+section_map ConfigFileReader::getOptions() const
+{   return this->_map ; }
 
 
 
@@ -62,18 +97,78 @@ std::string ConfigFileReader::getString(const std::string& section, const std::s
     }
 }
 
-double ConfigFileReader::getDouble(const std::string& section, const std::string& option) const throw(std::runtime_error)
-{   if(section == "section" and option == "option")
-    {   return 1. ; }
-    return 0. ;
+double ConfigFileReader::getDouble(const std::string& section, const std::string& option) throw(std::runtime_error)
+{   section_map::iterator s_iter = this->find_option(section, option) ;
+    if(s_iter != this->_map.end())
+    {   option_map::const_iterator o_iter = (*s_iter).second.find(option) ;
+        // no option-value, raise an error
+        if(o_iter == (*s_iter).second.end())
+        {   char msg[512] ;
+            sprintf(msg, "ConfigFileReader error! Cannot find %s option in %s section value!",
+                    option.c_str(), section.c_str()) ;
+            throw std::runtime_error(msg) ;
+
+        }
+        return stod((*o_iter).second) ;
+    }
+    // no section, raise an error
+    else
+    {   char msg[512] ;
+        sprintf(msg, "ConfigFileReader error! Cannot find %s section!",
+                section.c_str()) ;
+        throw std::runtime_error(msg) ;
+    }
 }
 
-int ConfigFileReader::getInt(const std::string& section, const std::string& option) const throw(std::runtime_error)
-{   if(section == "section" and option == "option")
-    {   return 1 ; }
-    return 0 ;
+int ConfigFileReader::getInt(const std::string& section, const std::string& option) throw(std::runtime_error)
+{   section_map::iterator s_iter = this->find_option(section, option) ;
+    if(s_iter != this->_map.end())
+    {   option_map::const_iterator o_iter = (*s_iter).second.find(option) ;
+        // no option-value, raise an error
+        if(o_iter == (*s_iter).second.end())
+        {   char msg[512] ;
+            sprintf(msg, "ConfigFileReader error! Cannot find %s option in %s section value!",
+                    option.c_str(), section.c_str()) ;
+            throw std::runtime_error(msg) ;
+
+        }
+        return stoi((*o_iter).second) ;
+    }
+    // no section, raise an error
+    else
+    {   char msg[512] ;
+        sprintf(msg, "ConfigFileReader error! Cannot find %s section!",
+                section.c_str()) ;
+        throw std::runtime_error(msg) ;
+    }
 }
 
+
+bool ConfigFileReader::getBool(const std::string& section, const std::string& option) throw(std::runtime_error, std::invalid_argument)
+{   section_map::iterator s_iter = this->find_option(section, option) ;
+    if(s_iter != this->_map.end())
+    {   option_map::const_iterator o_iter = (*s_iter).second.find(option) ;
+        // no option-value, raise an error
+        if(o_iter == (*s_iter).second.end())
+        {   char msg[512] ;
+            sprintf(msg, "ConfigFileReader error! Cannot find %s option in %s section value!",
+                    option.c_str(), section.c_str()) ;
+            throw std::runtime_error(msg) ;
+
+        }
+        try
+        {   return stobool((*o_iter).second) ; }
+        catch(std::invalid_argument e)
+        {   throw e ; }
+    }
+    // no section, raise an error
+    else
+    {   char msg[512] ;
+        sprintf(msg, "ConfigFileReader error! Cannot find %s section!",
+                section.c_str()) ;
+        throw std::runtime_error(msg) ;
+    }
+}
 
 
 void ConfigFileReader::read_file() throw (std::runtime_error)
@@ -90,7 +185,6 @@ void ConfigFileReader::read_file() throw (std::runtime_error)
     std::string section, option, value ;
     while(this->_f.getline(this->_buffer, BUFFER_SIZE))
     {   std::string buffer(this->_buffer) ;
-        std::cerr << "test new line read" << std::endl ;
         // empty line
         if(buffer.size() == 0)
         {   continue ; }
@@ -102,16 +196,14 @@ void ConfigFileReader::read_file() throw (std::runtime_error)
         // not proper section header
         if(((buffer.front() == '[') and (buffer.back() != ']')) or
            ((buffer.front() != '[') and (buffer.back() == ']')))
-        {   std::cerr << "line is not proper header" << std::endl ;
-            char msg[512] ;
+        {   char msg[512] ;
             sprintf(msg, "ConfigFileReader error! Incorrect format in section header %s!", buffer.c_str()) ;
             throw std::runtime_error(msg) ;
         }
         // proper section header
         // "[<header>]", nothing else admitted
         else if(buffer.front() == '[' and buffer.back() == ']')
-        {   std::cerr << "line is proper header" << std::endl ;
-            section.clear() ;
+        {   section.clear() ;
             size_t i=0 ;
             while(buffer[i] != '\0' and i < BUFFER_SIZE)
             {   // don't retain these char
@@ -141,16 +233,14 @@ void ConfigFileReader::read_file() throw (std::runtime_error)
         // TODO -> the current implementation accepts spaces within <option> and <value>
         // but don't read them -> correct to raise an error when this happens?
         else
-        {   std::cerr << "line is option/value pair" << std::endl ;
-            option.clear() ; value.clear() ;
+        {   option.clear() ; value.clear() ;
             // should contain exactly one '=' char
             size_t first = buffer.find('=') ;
             size_t last  = buffer.rfind('=') ;
             // error, 0 or >1 =
             if((first == std::string::npos) or
                (first != last))
-            {   std::cerr << "line option/value pair has issue with =" << std::endl ;
-                char msg[512] ;
+            {   char msg[512] ;
                 sprintf(msg, "ConfigFileReader error! Incorrect format in option %s!", buffer.c_str()) ;
                 throw std::runtime_error(msg) ;
             }
@@ -161,13 +251,11 @@ void ConfigFileReader::read_file() throw (std::runtime_error)
                 {   if(buffer[i] != ' ')
                     {   option.push_back(buffer[i]) ; }
                 }
-                std::cerr << "option read : " << option << std::endl ;
                 // value -> from '=' (minus the spaces) to end
                 for(size_t i=first+1; i<buffer.size(); i++)
                 {   if(buffer[i] != ' ')
                     {   value.push_back(buffer[i]) ; }
                 }
-                std::cerr << "value read : " << value << std::endl ;
                 // store option and value
                 if(this->has_option(section, option))
                 {   char msg[512] ;
@@ -176,13 +264,9 @@ void ConfigFileReader::read_file() throw (std::runtime_error)
                     throw std::runtime_error(msg) ;
                 }
                 else
-                {   std::cerr << "storing section/option/section : " << section << "/" << option << "/" << value << std::endl ;
-                    // TODO -> this triggers a segfault
-                    this->add_new_option(section, option, value) ;
-                }
+                {   this->add_new_option(section, option, value) ; }
             }
         }
-        std::cerr << "end of treatment for line" << std::endl ;
     }
 }
 
@@ -221,12 +305,13 @@ void ConfigFileReader::add_new_option(const std::string& section, const std::str
 {   section_map::iterator s_iter = this->find_section(section) ;
     // section exists
     if(s_iter != this->_map.end())
-    {   s_iter = this->find_option(section, option) ;
+    {   section_map::iterator s_iter_opt = this->find_option(section, option) ;
         // option exists -> overwrite its value
-        if(s_iter != this->_map.end())
+        if(s_iter_opt != this->_map.end())
         {   // get back to option
-            option_map::iterator o_iter = (*s_iter).second.find(option) ;
+            option_map::iterator o_iter = (*s_iter_opt).second.find(option) ;
             (*o_iter).second = value ;
+
         }
         // option does not exists -> create it
         else
