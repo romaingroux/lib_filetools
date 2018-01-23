@@ -1,11 +1,12 @@
 #ifndef FASTA_ELEMENT_H
 #define FASTA_ELEMENT_H
 
+#include "Interfaces/Data_element.hpp"
 #include <iostream>
 #include <string>
 #include <cmath>
 
-class FASTA_element
+class FASTA_element : public Data_element
 {   /*  A class to store a FASTA entry. This class can store both the sequence and the header as well as a flag
  *      to indicate whether the sequence should be considered as 1-based or not.
  *  */

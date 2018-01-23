@@ -5,7 +5,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "FileReader/FileReader.hpp"
+#include "Interfaces/FileReader.hpp"
 #include "FASTAFile/FASTA_element.hpp"
 
 

@@ -3,13 +3,14 @@
 
 #define SGA_DELIMITER '\t'
 
+#include "Interfaces/Data_element.hpp"
 #include <stdlib.h>
 #include <string>
 #include <sstream>
 #include <iostream>
 #include <stdexcept>
 
-class SGA_element
+class SGA_element : public Data_element
 {   /*  A class to store information in a SGA file line. This class does only account for the first 5 fields. */
 
     public:

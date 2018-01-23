@@ -10,7 +10,7 @@ libs_path = "/usr/local/lib"
 
 # Source files:
 sgafile_src    = Glob("SGAFile/*.cpp")
-filereader_src = Glob("FileReader/*.cpp")
+interfaces_src = Glob("Interfaces/*.cpp")
 fastafile_src  = Glob("FASTAFile/*.cpp")
 configfile_src = Glob("ConfigFile/*.cpp")
 test_src       = Glob("Unittests/*.cpp")
@@ -21,7 +21,7 @@ test_main2_src = Glob("test.cpp")
 
 
 # compilation instructions for every module
-filreader_obj  = Object(filereader_src, CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
+interfaces_obj = Object(interfaces_src, CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
 sgafile_obj    = Object(sgafile_src,    CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
 fastafile_obj  = Object(fastafile_src,  CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
 configfile_obj = Object(configfile_src, CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
@@ -30,8 +30,8 @@ test_main_obj  = Object(test_main_src,  CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=l
 test_main2_obj = Object(test_main2_src, CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
 
 # unittest program compilation
-Program("unittests", test_main_obj + test_obj + filreader_obj + sgafile_obj + fastafile_obj, CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
+Program("unittests", test_main_obj + test_obj + interfaces_obj + sgafile_obj + fastafile_obj, CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
 # test program compilation
-Program("test", test_main2_obj + filreader_obj + configfile_obj, CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
+Program("test", test_main2_obj + interfaces_obj + configfile_obj, CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
 # static library
-StaticLibrary("FileTools", filreader_obj + sgafile_obj + fastafile_obj + configfile_obj, CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
+StaticLibrary("FileTools", interfaces_obj + sgafile_obj + fastafile_obj + configfile_obj, CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)

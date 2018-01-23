@@ -1,7 +1,7 @@
 #ifndef CONFIGFILEREADER_H
 #define CONFIGFILEREADER_H
 
-#include "FileReader/FileReader.hpp"
+#include "Interfaces/FileReader.hpp"
 
 #include <string>
 #include <unordered_map>

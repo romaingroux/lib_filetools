@@ -5,7 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include "SGA_element.hpp"
-#include "FileReader/FileReader.hpp"
+#include "Interfaces/FileReader.hpp"
 
 
 /*!
