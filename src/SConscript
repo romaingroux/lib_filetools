@@ -19,6 +19,7 @@ test_src       = Glob("Unittests/*.cpp")
 test_main_src  = Glob("unittests.cpp")
 test_main2_src = Glob("test.cpp")
 
+
 # compilation instructions for every module
 filreader_obj  = Object(filereader_src, CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
 sgafile_obj    = Object(sgafile_src,    CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)

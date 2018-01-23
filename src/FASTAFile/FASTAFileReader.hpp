@@ -44,7 +44,7 @@ class FASTAFileReader : public FileReader
          * 10 times. Using a value higher than 2'000'000 will result in no
          * reallocation.
          */
-        FASTAFileReader(const std::string& fasta_file_address, bool one_based_seq, size_t sequence_alloc_size);
+        FASTAFileReader(const std::string& fasta_file_address, bool one_based_seq=false, size_t sequence_alloc_size=1000);
 
         virtual ~FASTAFileReader() override ;
         /*!
@@ -96,7 +96,7 @@ class FASTAFileReader : public FileReader
          * will have to reallocate memory at least 10 times. Using a value higher than 2'000'000
          * will result in no reallocation.
          */
-        void set_file(const std::string& fasta_file_address, bool one_based_seq, size_t sequence_alloc_size=1000) ;
+        void set_file(const std::string& fasta_file_address, bool one_based_seq=false, size_t sequence_alloc_size=1000) ;
 
         /*!
          * \brief  This method search in _f_seq an entry having a header corresponding to one
