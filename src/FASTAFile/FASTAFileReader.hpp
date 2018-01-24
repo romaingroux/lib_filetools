@@ -2,6 +2,7 @@
 #define FASTAFILEREADER_H
 
 #include <string>
+#include <stdexcept>
 #include <iostream>
 #include <fstream>
 
@@ -9,6 +10,7 @@
 #include "FASTAFile/FASTA_element.hpp"
 #include "Interfaces/Data_element.hpp"
 #include "Interfaces/SerialReading.hpp"
+#include "Interfaces/SpecificReading.hpp"
 
 
 // for file reading
@@ -18,7 +20,7 @@
  * \brief The FASTAFileReader class handles connection and data fetching from
  * FASTA files. This class uses the class FASTA_element.
  */
-class FASTAFileReader : public FileReader, SerialReading
+class FASTAFileReader : public FileReader, SerialReading, SpecificReading
 {
     public:
         // *** methods ****
@@ -105,7 +107,7 @@ class FASTAFileReader : public FileReader, SerialReading
          *  given as argument and return the entry. The pointer in _f_seq is reset to the beginning
          * of the file at the start of this method and left where it is at return. The returned
          * FASTA_element should be deleted to avoid memory leaks.
-         * \param header_match a pattern to search in the file headers.
+         * \param pattern a pattern to search in the file headers.
          * \param exact_match whether the match between the header and the given pattern should
          * be exact (true) or only partial (false). A partial match is defined as a pattern being
          * a subsequence of the file header, i.g. file header "chromosome_101" and pattern "chromosome_10".
@@ -120,7 +122,7 @@ class FASTAFileReader : public FileReader, SerialReading
          * \return A pointer to a dynamically FASTA_element if an entry has been found, a NULL
          * pointer otherwise. This FASTA_element should be deleted to avoid memory leaks.
          */
-        FASTA_element* get_specific_entry(const std::string& header_match, bool exact_match) throw (std::runtime_error) ;
+        virtual FASTA_element* get(const std::string& pattern, bool exact_match) throw (std::runtime_error) override ;
 
         /*!
          * \brief This method returns the next entry in _f_seq compared to the current file pointer
@@ -130,7 +132,7 @@ class FASTAFileReader : public FileReader, SerialReading
          * \return A pointer to a FASTA_element if an entry has been found, a NULL pointer
          * otherwise.
          */
-        virtual Data_element* get_next() throw (std::runtime_error, std::invalid_argument) override ;
+        virtual FASTA_element* get_next() throw (std::runtime_error, std::invalid_argument) override ;
 
     private:
         // *** methods ****
@@ -148,6 +150,30 @@ class FASTAFileReader : public FileReader, SerialReading
          * '>' character).
          */
         bool get_sequence(FASTA_element& fasta_element) ;
+
+        /*!
+         * \brief Checks whether a fasta header contains a given pattern. A partial
+         * match is defined as a pattern being a subsequence of the file header, i.g.
+         * file header "chromosome_101" and pattern "chromosome_10". In this case,
+         * the first entry corresponding to a partial match is returned
+         * \param candidate the fasta header of interest.
+         * \param pattern a pattern to find.
+         * \return whether the header contains the pattern.
+         */
+        virtual bool hasPattern(const std::string& candidate, const std::string& pattern) const override ;
+
+        /*!
+         * \brief Checks whether a fasta header exactly matches a given pattern. An exact
+         * match is defined as the pattern matching exactly a specific part of the file header.
+         * For this the header is expected to be formatted as follows : [...]<pattern> [...] where
+         * [...] can contain anything *BUT* <pattern> nor a space char (' ') and <pattern> is the
+         * pattern to search. The method will look for an occurence of pattern ended by a space char.
+         * \param candidate the fasta header of interest.
+         * \param pattern a pattern to find.
+         * \return whether the header exactly matches the pattern.
+         */
+        virtual bool isPattern(const std::string& candidate, const std::string& pattern) const override ;
+
 
         //*** fields ****        
         /*!

@@ -105,19 +105,19 @@ SUITE(FASTAFileReader_testsuit)
         }
         // check whether the sequences can be retrieved specifically
         // find 4th entry
-        fasta = fasta_reader.get_specific_entry("NC_000004.1", true) ;
+        fasta = fasta_reader.get("NC_000004.1", true) ;
         CHECK_EQUAL(true, fasta->sequence == fasta4.sequence) ;
         delete fasta ;
         // find 3rd entry
-        fasta = fasta_reader.get_specific_entry("NC_000003.1", true) ;
+        fasta = fasta_reader.get("NC_000003.1", true) ;
         CHECK_EQUAL(true, fasta->sequence == fasta3.sequence) ;
         delete fasta ;
         // find 2nd entry
-        fasta = fasta_reader.get_specific_entry("NC_000002.1", true) ;
+        fasta = fasta_reader.get("NC_000002.1", true) ;
         CHECK_EQUAL(true, fasta->sequence == fasta2.sequence) ;
         delete fasta ;
         // find 1st entry
-        fasta = fasta_reader.get_specific_entry("NC_000001.1", true) ;
+        fasta = fasta_reader.get("NC_000001.1", true) ;
         CHECK_EQUAL(true, fasta->sequence == fasta1.sequence) ;
         delete fasta ;
     }
@@ -183,19 +183,19 @@ SUITE(FASTAFileReader_testsuit)
 
         // check whether the sequences can be retrieved specifically
         // find 4th entry
-        fasta = fasta_reader.get_specific_entry("NC_000004.1", true) ;
+        fasta = fasta_reader.get("NC_000004.1", true) ;
         CHECK_EQUAL(true, fasta->sequence == fasta4.sequence) ;
         delete fasta ;
         // find 3rd entry
-        fasta = fasta_reader.get_specific_entry("NC_000003.1", true) ;
+        fasta = fasta_reader.get("NC_000003.1", true) ;
         CHECK_EQUAL(true, fasta->sequence == fasta3.sequence) ;
         delete fasta ;
         // find 2nd entry
-        fasta = fasta_reader.get_specific_entry("NC_000002.1", true) ;
+        fasta = fasta_reader.get("NC_000002.1", true) ;
         CHECK_EQUAL(true, fasta->sequence == fasta2.sequence) ;
         delete fasta ;
         // find 1st entry
-        fasta = fasta_reader.get_specific_entry("NC_000001.1", true) ;
+        fasta = fasta_reader.get("NC_000001.1", true) ;
         CHECK_EQUAL(true, fasta->sequence == fasta1.sequence) ;
         delete fasta ;
 
@@ -240,19 +240,19 @@ SUITE(FASTAFileReader_testsuit)
 
         // check whether the sequences can be retrieved specifically
         // find 4th entry
-        fasta = fasta_reader.get_specific_entry("NC_000004.1", true) ;
+        fasta = fasta_reader.get("NC_000004.1", true) ;
         CHECK_EQUAL(true, fasta->sequence == fasta4.sequence) ;
         delete fasta ;
         // find 3rd entry
-        fasta = fasta_reader.get_specific_entry("NC_000003.1", true) ;
+        fasta = fasta_reader.get("NC_000003.1", true) ;
         CHECK_EQUAL(true, fasta->sequence == fasta3.sequence) ;
         delete fasta ;
         // find 2nd entry
-        fasta = fasta_reader.get_specific_entry("NC_000002.1", true) ;
+        fasta = fasta_reader.get("NC_000002.1", true) ;
         CHECK_EQUAL(true, fasta->sequence == fasta2.sequence) ;
         delete fasta ;
         // find 1st entry
-        fasta = fasta_reader.get_specific_entry("NC_000001.1", true) ;
+        fasta = fasta_reader.get("NC_000001.1", true) ;
         CHECK_EQUAL(true, fasta->sequence == fasta1.sequence) ;
         delete fasta ;
 
@@ -297,19 +297,19 @@ SUITE(FASTAFileReader_testsuit)
 
         // check whether the sequences can be retrieved specifically
         // find 4th entry
-        fasta = fasta_reader.get_specific_entry("NC_000004.1", true) ;
+        fasta = fasta_reader.get("NC_000004.1", true) ;
         CHECK_EQUAL(true, fasta->sequence == fasta4.sequence) ;
         delete fasta ;
         // find 3rd entry
-        fasta = fasta_reader.get_specific_entry("NC_000003.1", true) ;
+        fasta = fasta_reader.get("NC_000003.1", true) ;
         CHECK_EQUAL(true, fasta->sequence == fasta3.sequence) ;
         delete fasta ;
         // find 2nd entry
-        fasta = fasta_reader.get_specific_entry("NC_000002.1", true) ;
+        fasta = fasta_reader.get("NC_000002.1", true) ;
         CHECK_EQUAL(true, fasta->sequence == fasta2.sequence) ;
         delete fasta ;
         // find 1st entry
-        fasta = fasta_reader.get_specific_entry("NC_000001.1", true) ;
+        fasta = fasta_reader.get("NC_000001.1", true) ;
         CHECK_EQUAL(true, fasta->sequence == fasta1.sequence) ;
         delete fasta ;
 
@@ -364,19 +364,19 @@ SUITE(FASTAFileReader_testsuit)
 
         // check whether the sequences can be retrieved specifically
         // find 4th entry
-        fasta = fasta_reader.get_specific_entry("NC_000004.1", true) ;
+        fasta = fasta_reader.get("NC_000004.1", true) ;
         CHECK_EQUAL(true, fasta->sequence == fasta4.sequence) ;
         delete fasta ;
         // find 3rd entry
-        fasta = fasta_reader.get_specific_entry("NC_000003.1", true) ;
+        fasta = fasta_reader.get("NC_000003.1", true) ;
         CHECK_EQUAL(true, fasta->sequence == fasta3.sequence) ;
         delete fasta ;
         // find 2nd entry
-        fasta = fasta_reader.get_specific_entry("NC_000002.1", true) ;
+        fasta = fasta_reader.get("NC_000002.1", true) ;
         CHECK_EQUAL(true, fasta->sequence == fasta2.sequence) ;
         delete fasta ;
         // find 1st entry
-        fasta = fasta_reader.get_specific_entry("NC_000001.1", true) ;
+        fasta = fasta_reader.get("NC_000001.1", true) ;
         CHECK_EQUAL(true, fasta->sequence == fasta1.sequence) ;
         delete fasta ;
 
@@ -432,20 +432,20 @@ SUITE(FASTAFileReader_testsuit)
 
         // check whether the sequences can be retrieved specifically
         // find 4th entry
-        fasta = fasta_reader.get_specific_entry("NC_000004.1", true) ;
+        fasta = fasta_reader.get("NC_000004.1", true) ;
         CHECK_EQUAL(true, fasta->sequence == fasta4.sequence) ;
         delete fasta ;
         // find 3rd entry
-        fasta = fasta_reader.get_specific_entry("NC_000003.1", true) ;
+        fasta = fasta_reader.get("NC_000003.1", true) ;
         CHECK_EQUAL(true, fasta->sequence == fasta3.sequence) ;
         delete fasta ;
         // search entries with the same header, should return the 1st one
         // (fasta1) and never the 2nd one (fasta2)
-        fasta = fasta_reader.get_specific_entry("NC_000001.1", true) ;
+        fasta = fasta_reader.get("NC_000001.1", true) ;
         CHECK_EQUAL(true, fasta->sequence == fasta1.sequence) ;
         delete fasta ;
         // redo the search to be sure it returns again the 1st entry (fasta1)
-        fasta = fasta_reader.get_specific_entry("NC_000001.1", true) ;
+        fasta = fasta_reader.get("NC_000001.1", true) ;
         CHECK_EQUAL(true, fasta->sequence == fasta1.sequence) ;
         delete fasta ;
     }

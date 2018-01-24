@@ -46,7 +46,7 @@ void FASTAFileReader::set_file(const std::string& fasta_file_address, bool one_b
 }
 
 
-FASTA_element* FASTAFileReader::get_specific_entry(const std::string& header_match, bool exact_match)
+FASTA_element* FASTAFileReader::get(const std::string& pattern, bool exact_match)
 throw (std::runtime_error)
 {
     // if not open, raise an error
@@ -71,19 +71,19 @@ throw (std::runtime_error)
         if('>' == this->_buffer[0])
         {   std::string header_line(this->_buffer) ;
             if(exact_match)
-            {   // in the header, searches for an exact match of header_match. The header is expected to be formatted as
-                // ">[...]header_match [...]" Thus search for header_match and a space (' '). The delimited substring
-                // should exactly match header_match to be considered as a match.
+            {   // in the header, searches for an exact match of pattern. The header is expected to be formatted as
+                // ">[...]pattern [...]" Thus search for pattern and a space (' '). The delimited substring
+                // should exactly match pattern to be considered as a match.
                 // example of an exact match
-                // header_match : "NC_000001.10"
+                // pattern     : "NC_000001.10"
                 // header_line :  ">chr|NC_000001|NC_000001.10 Chromosome 1; [Homo sapiens] ..."
                 std::string header_line(this->_buffer) ;
-                size_t start = header_line.find(header_match) ;
-                size_t end   = header_line.find(" ") ;
                 // the header conforms to the searched format
-                if((start != std::string::npos) and (end != std::string::npos))
-                {   std::string header_chrom = header_line.substr(start, end-start) ;
-                    if(header_chrom == header_match)
+                if(this->isPattern(header_line, pattern))
+                {   size_t start = header_line.find(pattern) ;
+                    size_t end   = header_line.find(" ") ;
+                    std::string header_chrom = header_line.substr(start, end-start) ;
+                    if(header_chrom == pattern)
                     {   // the header is the header of interest,
                         // the next read character will be the 1st char of the sequence :-)
                         // allocate memory for a FASTA element to be returned
@@ -107,14 +107,14 @@ throw (std::runtime_error)
                 // header_line :  ">chr|NC_000001|NC_000001.1 Chromosome 1; [Homo sapiens] ..."
                 // header_line :  ">chr|NC_000001|NC_000001.10 Chromosome 1; [Homo sapiens] ..."
                 // these two example of header may be match. The returned one will be the first encountered.
-                if(header_line.find(header_match) != std::string::npos)
+                if(this->hasPattern(header_line, pattern))
                 {   // the header is the header of interest,
                     // the next read character will be the 1st char of the sequence :-)
                     // allocate memory for a FASTA element to be returned
                     fasta_element = new FASTA_element() ;
                     // reserve memory for the sequence
                     fasta_element->sequence.reserve(this->get_alloc_size()) ;
-                    fasta_element->header = header_match ; // stores the complete header
+                    fasta_element->header = pattern ; // stores the complete header
                     found_seq = true ;                     // data in fasta_element are meaningfull
                     break ;
                 }
@@ -145,7 +145,7 @@ throw (std::runtime_error)
 }
 
 
-Data_element* FASTAFileReader::get_next() throw (std::runtime_error, std::invalid_argument)
+FASTA_element* FASTAFileReader::get_next() throw (std::runtime_error, std::invalid_argument)
 {   // if _f_seq is not open, raise an error
     if(not this->is_open())
     {   char msg[512] ;
@@ -190,6 +190,25 @@ Data_element* FASTAFileReader::get_next() throw (std::runtime_error, std::invali
     else if(seq_found)
     {   fasta_element->sequence_length = fasta_element->sequence.length() ; }
     return fasta_element ;
+}
+
+
+bool FASTAFileReader::hasPattern(const std::string& candidate, const std::string& pattern) const
+{   // check presence of subtring
+    if(candidate.find(pattern) != std::string::npos)
+    {   return true ; }
+    else
+    {   return false ; }
+}
+
+
+bool FASTAFileReader::isPattern(const std::string& candidate, const std::string& pattern) const
+{   bool start = this->hasPattern(candidate, pattern) ;
+    bool end   = this->hasPattern(candidate, " ") ;
+    if(start and end)
+    {   return true ; }
+    else
+    {   return false ; }
 }
 
 

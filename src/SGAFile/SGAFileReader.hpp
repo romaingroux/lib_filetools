@@ -4,6 +4,8 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <stdexcept>
+
 #include "SGA_element.hpp"
 #include "Interfaces/Data_element.hpp"
 #include "Interfaces/FileReader.hpp"
@@ -44,7 +46,7 @@ class SGAFileReader : public FileReader, SerialReading
          * SGA_element. If no line could be read from the
          * file, nullptr is returned.
          */
-        virtual Data_element* get_next() throw (std::runtime_error, std::invalid_argument) override ;
+        virtual SGA_element* get_next() throw (std::runtime_error, std::invalid_argument) override ;
 
     private:
         // *** methods ****
