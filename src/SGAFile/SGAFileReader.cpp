@@ -13,7 +13,7 @@ SGAFileReader::~SGAFileReader()
 {   this->close() ; }
 
 
-SGA_element* SGAFileReader::get_next() throw (std::runtime_error, std::invalid_argument)
+Data_element* SGAFileReader::get_next() throw (std::runtime_error, std::invalid_argument)
 {   // file is not open
     if(not this->is_open())
     {   char msg[512] ;

@@ -5,14 +5,16 @@
 #include <iostream>
 #include <fstream>
 #include "SGA_element.hpp"
+#include "Interfaces/Data_element.hpp"
 #include "Interfaces/FileReader.hpp"
+#include "Interfaces/SerialReading.hpp"
 
 
 /*!
  * \brief The SGAFIleReader class handles connection and data fetching
  * from SGA files. This class uses the class SGA_element.
  */
-class SGAFileReader : public FileReader
+class SGAFileReader : public FileReader, SerialReading
 {
     public:
 
@@ -42,7 +44,7 @@ class SGAFileReader : public FileReader
          * SGA_element. If no line could be read from the
          * file, nullptr is returned.
          */
-        SGA_element* get_next() throw (std::runtime_error, std::invalid_argument);
+        virtual Data_element* get_next() throw (std::runtime_error, std::invalid_argument) override ;
 
     private:
         // *** methods ****

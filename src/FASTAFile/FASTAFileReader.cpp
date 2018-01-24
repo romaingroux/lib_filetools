@@ -145,7 +145,7 @@ throw (std::runtime_error)
 }
 
 
-FASTA_element* FASTAFileReader::get_next() throw (std::runtime_error)
+Data_element* FASTAFileReader::get_next() throw (std::runtime_error, std::invalid_argument)
 {   // if _f_seq is not open, raise an error
     if(not this->is_open())
     {   char msg[512] ;

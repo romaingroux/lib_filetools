@@ -7,6 +7,8 @@
 
 #include "Interfaces/FileReader.hpp"
 #include "FASTAFile/FASTA_element.hpp"
+#include "Interfaces/Data_element.hpp"
+#include "Interfaces/SerialReading.hpp"
 
 
 // for file reading
@@ -16,7 +18,7 @@
  * \brief The FASTAFileReader class handles connection and data fetching from
  * FASTA files. This class uses the class FASTA_element.
  */
-class FASTAFileReader : public FileReader
+class FASTAFileReader : public FileReader, SerialReading
 {
     public:
         // *** methods ****
@@ -128,7 +130,7 @@ class FASTAFileReader : public FileReader
          * \return A pointer to a FASTA_element if an entry has been found, a NULL pointer
          * otherwise.
          */
-        FASTA_element* get_next() throw (std::runtime_error) ;
+        virtual Data_element* get_next() throw (std::runtime_error, std::invalid_argument) override ;
 
     private:
         // *** methods ****
