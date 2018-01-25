@@ -65,7 +65,7 @@ class FileReader
          * ios_base::cur, ios_base::end
          * \throw runtime_error upon an attempt to seek on a closed file.
          */
-        void seek(size_t pos, std::ios_base::seekdir way) throw (std::runtime_error);
+        void seek(int pos, std::ios_base::seekdir way) throw (std::runtime_error);
 
         // **** fields ****
         /*!

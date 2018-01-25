@@ -3,6 +3,7 @@
 
 #include <string>
 #include <stdexcept>
+#include <unordered_map>
 #include "Interfaces/Data_element.hpp"
 
 
@@ -42,6 +43,27 @@ class SpecificReading
          * considered as an exact match.
          */
         virtual bool isPattern(const std::string& candidate, const std::string& pattern) const = 0 ;
+
+        /*!
+         * \brief This method should implement the way the map storing the pairs of header/pointer
+         * is filled.
+         */
+        virtual void fillMap() = 0 ;
+
+        /*!
+         * \brief Gets the position of the entry having the given header in the file.
+         * \throw std::runtime_error if no entry with this header could be found.
+         * \return the position in the file of the entry starting with this header.
+         */
+        long long get_entry_position(const std::string& header) const throw (std::runtime_error) ;
+
+        /*!
+         * \brief A map to store pairs of entry header and pointer position for the beginning of
+         *  the entry with this header in the file. Pointers are offsets from the start of the
+         * file.
+         */
+        std::unordered_map<std::string, long long> _entry_map ;
+
 } ;
 
 #endif // SPECIFICREADER_H

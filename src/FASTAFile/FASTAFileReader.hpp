@@ -136,8 +136,6 @@ class FASTAFileReader : public FileReader, SerialReading, SpecificReading
 
     private:
         // *** methods ****
-        // handle stream opening
-        // method to retrieve the sequence after a header has been read
         /*!
          * \brief Reads the file from the current position to get a sequence.
          * This should be called only after a header has been read, never
@@ -174,6 +172,10 @@ class FASTAFileReader : public FileReader, SerialReading, SpecificReading
          */
         virtual bool isPattern(const std::string& candidate, const std::string& pattern) const override ;
 
+        /*!
+         * \brief This method fills the map storing the pairs of header/pointer.
+         */
+        virtual void fillMap() ;
 
         //*** fields ****        
         /*!

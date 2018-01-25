@@ -3,6 +3,7 @@
 FASTAFileReader::FASTAFileReader()
 {   this->_f_open = false ; }
 
+
 FASTAFileReader::FASTAFileReader(const std::string& fasta_file_address, bool one_based_seq, size_t sequence_alloc_size)
 {   this->_f_open = false ;
     this->_f_address = fasta_file_address ;
@@ -11,6 +12,7 @@ FASTAFileReader::FASTAFileReader(const std::string& fasta_file_address, bool one
     this->open() ;
 }
 
+
 FASTAFileReader::~FASTAFileReader()
 {   this->close() ; }
 
@@ -18,8 +20,10 @@ FASTAFileReader::~FASTAFileReader()
 bool FASTAFileReader::is_1based() const
 {   return this->_one_based_seq ; }
 
+
 void FASTAFileReader::set_0based()
 {   this->_one_based_seq = false ; }
+
 
 void FASTAFileReader::set_1based()
 {   this->_one_based_seq = true ; }
@@ -43,6 +47,8 @@ void FASTAFileReader::set_file(const std::string& fasta_file_address, bool one_b
     this->set_alloc_size(sequence_alloc_size) ;
     // modify _f_address and opens it
     FileReader::set_file(fasta_file_address) ;
+    // fills the map
+    this->fillMap() ;
 }
 
 
@@ -225,3 +231,23 @@ bool FASTAFileReader::get_sequence(FASTA_element& fasta_element)
     return seq_found ;
 }
 
+#include <iomanip>
+
+void FASTAFileReader::fillMap()
+{   this->seek(0, std::ios::beg) ;
+    char c ;
+
+    while(this->_f.get(c))
+    {   // header start
+        if(c == '>')
+        {   // get back 1 byte (right before header) and read whole header
+            this->seek(-1, std::ios::cur) ;
+            long long pos = this->_f.tellg() ;
+            this->_f.getline(this->_buffer, BUFFER_SIZE) ;
+            std::string header(this->_buffer) ;
+            this->_entry_map.emplace(header, pos) ;
+            std::cerr << std::setw(4) << pos << "   " << header << std::endl ;
+        }
+    }
+    this->seek(0, std::ios::beg) ;
+}
