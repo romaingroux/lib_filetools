@@ -180,7 +180,7 @@ void ConfigFileReader::read_file() throw (std::runtime_error)
     }
 
     // go to file start
-    this->seek(0, std::ios::beg) ;
+    this->seekg(0, std::ios::beg) ;
     // read each line
     std::string section, option, value ;
     while(this->_f.getline(this->_buffer, BUFFER_SIZE))

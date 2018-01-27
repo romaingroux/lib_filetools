@@ -38,12 +38,17 @@ throw (std::runtime_error)
 }
 
 
-void FileReader::seek(int pos, std::ios_base::seekdir way) throw (std::runtime_error)
+void FileReader::seekg(long long pos, std::ios_base::seekdir from) throw (std::runtime_error)
 {   if(not this->is_open())
     {   char msg[512] ;
         sprintf(msg, "FileReader error! Attempt to read file %s which is closed!", this->get_file().c_str()) ;
         throw std::runtime_error(msg) ;
     }
     this->_f.clear() ;
-    this->_f.seekg(pos, way) ;
+    this->_f.seekg(pos, from) ;
 }
+
+
+long long FileReader::tellg()
+{   return this->_f.tellg() ; }
+

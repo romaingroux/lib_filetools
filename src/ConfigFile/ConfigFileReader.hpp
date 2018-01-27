@@ -53,9 +53,9 @@ class ConfigFileReader : public FileReader
         // *** methods ***
         void read_file() throw (std::runtime_error) ;
               section_map::iterator find_section(const std::string& section) ;
-        // const section_map::iterator find_section(const std::string& section) const ; // todo
+        const section_map::iterator find_section(const std::string& section) const ; // todo
               section_map::iterator find_option(const std::string& section, const std::string& option) ;
-        // const section_map::iterator find_option(const std::string& section, const std::string& option) const ; // todo
+        const section_map::iterator find_option(const std::string& section, const std::string& option) const ; // todo
         void add_new_section(const std::string& section) ;
         void add_new_option(const std::string& section, const std::string& option, const std::string& value) ;
         // *** fields ***

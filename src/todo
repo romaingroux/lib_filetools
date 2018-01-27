@@ -1,11 +1,13 @@
+FileReader
+           1) est-ce que mettre à dispo good(), bad(), fail(), eof() ?
 FASTAFileReader
-	1) faire constructeur à partir fichier
-	2) utiliser la map
-	3) tester la map
-	4) supprimer fonctionalité match approximatif -> modifier SpecificReader
+        OK 1) faire constructeur à partir fichier
+        OK 2) utiliser la map
+        OK 3) tester la map
+        OK 4) supprimer fonctionalité match approximatif -> modifier SpecificReader
 
 SpecificReader
-	1) supprimé fonctionalité match approximatif
+        OK 1) supprimé fonctionalité match approximatif
 	2) implémenter des getters const et normal pour _entry_map et les utiliser
 
 ConfigFileReader

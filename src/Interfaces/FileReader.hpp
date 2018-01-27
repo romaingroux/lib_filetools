@@ -23,7 +23,7 @@ class FileReader
 
         /*!
          * \brief Sets to which file the object should be streamed to.
-         * A stream should be open on this stream upon the end of the
+         * A stream is open on this stream upon the end of the
          * call.
          * \param file_address the file address.
          */
@@ -47,6 +47,24 @@ class FileReader
          */
         void close() ;
 
+        /*!
+         * \brief Modifies the position of the pointer within the file through
+         * a call to seekg(). Each call to this function also calls clear()
+         * on the stream and reset the stream state.
+         * \param pos the new wanted position of the pointer in the
+         * file.
+         * \param from the reference to set pos from, i.e. ios_base::beg,
+         * ios_base::cur, ios_base::end
+         * \throw runtime_error upon an attempt to seek on a closed file.
+         */
+        void seekg(long long pos, std::ios_base::seekdir from) throw (std::runtime_error);
+
+        /*!
+         * \brief Returns the current position of the pointer within the file through
+         * a call to tellg.
+         */
+        long long tellg() ;
+
     protected:
         // *** methods ****
         /*!
@@ -56,16 +74,6 @@ class FileReader
          * be open.
          */
         void open() throw (std::runtime_error) ;
-
-        /*!
-         * \brief Modifies the position of the pointer within the file.
-         * \param pos the new wanted position of the pointer in the
-         * file.
-         * \param way the reference to set pos from, i.e. ios_base::beg,
-         * ios_base::cur, ios_base::end
-         * \throw runtime_error upon an attempt to seek on a closed file.
-         */
-        void seek(int pos, std::ios_base::seekdir way) throw (std::runtime_error);
 
         // **** fields ****
         /*!

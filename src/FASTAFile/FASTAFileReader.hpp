@@ -103,33 +103,28 @@ class FASTAFileReader : public FileReader, SerialReading, SpecificReading
         void set_file(const std::string& fasta_file_address, bool one_based_seq=false, size_t sequence_alloc_size=1000) ;
 
         /*!
-         * \brief  This method search in _f_seq an entry having a header corresponding to one
-         *  given as argument and return the entry. The pointer in _f_seq is reset to the beginning
-         * of the file at the start of this method and left where it is at return. The returned
-         * FASTA_element should be deleted to avoid memory leaks.
+         * \brief  This method searches an entry in the stream having a header corresponding to one
+         *  given as argument and return the corresponding entry if one is foudn. The header/pattern
+         * comparison is performed by the matchesPattern() method.
+         * Also, this method guarantees that after a call, the file pointer position is restored to
+         * the same position as it was before the call. However, the stream state is not preserved
+         * (the method calls seekg() which calls clear() on the stream). If the file pointer was at
+         * the end of the file and that the stream was eof before the call, after the call the file
+         * pointer will still be at the end of the file but the state will be ok. But a subsequent
+         * call to get_next() will return nullptr.
          * \param pattern a pattern to search in the file headers.
-         * \param exact_match whether the match between the header and the given pattern should
-         * be exact (true) or only partial (false). A partial match is defined as a pattern being
-         * a subsequence of the file header, i.g. file header "chromosome_101" and pattern "chromosome_10".
-         * In this case, the first entry corresponding to a partial match is returned. An exact
-         * match is defined as the pattern matching exactly a specific part of the file header.
-         * For this the header is expected to be formatted as follows : [...]<pattern> [...] where
-         * [...] can contain anything *BUT* <pattern> nor a space char (' ') and <pattern> is the
-         * pattern to search. The method will look for an occurence of pattern ended by a space char.
-         * i.g. "chromosome_10" and pattern "10" -> no match because no space after pattern
-         * i.g. "chromosome_10 human" and pattern "10" -> match!
          * \throw runtime_error upon an attempt to read from a closed file.
          * \return A pointer to a dynamically FASTA_element if an entry has been found, a NULL
          * pointer otherwise. This FASTA_element should be deleted to avoid memory leaks.
          */
-        virtual FASTA_element* get(const std::string& pattern, bool exact_match) throw (std::runtime_error) override ;
+        virtual FASTA_element* get(const std::string& pattern) throw (std::runtime_error) override ;
 
         /*!
          * \brief This method returns the next entry in _f_seq compared to the current file pointer
          * position. The next entry is defined as the next header followed by a sequence. The
          * returned FASTA_element will need to be deleted to avoid memory leaks.
          * \throw runtime_error upon an attempt to read from a closed file.
-         * \return A pointer to a FASTA_element if an entry has been found, a NULL pointer
+         * \return A pointer to a FASTA_element if an entry has been found, nullptr
          * otherwise.
          */
         virtual FASTA_element* get_next() throw (std::runtime_error, std::invalid_argument) override ;
@@ -150,32 +145,18 @@ class FASTAFileReader : public FileReader, SerialReading, SpecificReading
         bool get_sequence(FASTA_element& fasta_element) ;
 
         /*!
-         * \brief Checks whether a fasta header contains a given pattern. A partial
-         * match is defined as a pattern being a subsequence of the file header, i.g.
-         * file header "chromosome_101" and pattern "chromosome_10". In this case,
-         * the first entry corresponding to a partial match is returned
+         * \brief Checks whether candidate fasta header exactly matches a given pattern.
          * \param candidate the fasta header of interest.
-         * \param pattern a pattern to find.
-         * \return whether the header contains the pattern.
-         */
-        virtual bool hasPattern(const std::string& candidate, const std::string& pattern) const override ;
-
-        /*!
-         * \brief Checks whether a fasta header exactly matches a given pattern. An exact
-         * match is defined as the pattern matching exactly a specific part of the file header.
-         * For this the header is expected to be formatted as follows : [...]<pattern> [...] where
-         * [...] can contain anything *BUT* <pattern> nor a space char (' ') and <pattern> is the
-         * pattern to search. The method will look for an occurence of pattern ended by a space char.
-         * \param candidate the fasta header of interest.
-         * \param pattern a pattern to find.
+         * \param pattern a pattern to check candidate against.
          * \return whether the header exactly matches the pattern.
          */
-        virtual bool isPattern(const std::string& candidate, const std::string& pattern) const override ;
+        virtual bool matchesPattern(const std::string& candidate, const std::string& pattern) const override ;
 
         /*!
-         * \brief This method fills the map storing the pairs of header/pointer.
+         * \brief This method fills the map of pairs header/file pointers. At return time,
+         * the file pointer position is set to the beginning of the file.
          */
-        virtual void fillMap() ;
+        virtual void fillMap() override ;
 
         //*** fields ****        
         /*!
