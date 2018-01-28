@@ -1,4 +1,5 @@
 #include "ConfigFile/ConfigFileReader.hpp"
+#include "FASTAFile/FASTAFileReader.hpp"
 #include <string>
 #include <iostream>
 
@@ -14,5 +15,6 @@ int main()
 	std::cout << "section1 : int1  :  " << cfr.getInt("section1", "int1") << std::endl ;
 	std::cout << "section1 : int1  :  " << cfr.getDouble("section1", "int1") << std::endl ;
 	std::cout << "section1 : bool1 :  " << cfr.getBool("section1", "bool1") << std::endl ;
+	
 	return EXIT_SUCCESS ;
 }

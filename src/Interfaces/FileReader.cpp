@@ -52,3 +52,20 @@ void FileReader::seekg(long long pos, std::ios_base::seekdir from) throw (std::r
 long long FileReader::tellg()
 {   return this->_f.tellg() ; }
 
+
+bool FileReader::good() const
+{   return this->_f.good() ; }
+
+
+bool FileReader::bad() const
+{   return this->_f.bad() ; }
+
+
+bool FileReader::fail() const
+{   return this->_f.fail() ; }
+
+
+bool FileReader::eof() const
+{   return this->_f.eof() ; }
+
+

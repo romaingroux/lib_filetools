@@ -29,6 +29,7 @@ class FASTAFileReader : public FileReader, SerialReading, SpecificReading
          * be established later using set_file()
          */
         FASTAFileReader() ;
+
         /*!
          * \brief Construct an instance connected to a FASTA file.
          * If <one_based_seq> is set to true, the sequences are
@@ -48,9 +49,18 @@ class FASTAFileReader : public FileReader, SerialReading, SpecificReading
          * 10 times. Using a value higher than 2'000'000 will result in no
          * reallocation.
          */
-        FASTAFileReader(const std::string& fasta_file_address, bool one_based_seq=false, size_t sequence_alloc_size=1000);
+        FASTAFileReader(const std::string& fasta_file_address, bool one_based_seq=false, size_t sequence_alloc_size=1000) ;
 
         virtual ~FASTAFileReader() override ;
+
+        /*!
+         * \brief Assignment operator.
+         * \param other another instance to copy the values from during
+         * the assignment.
+         * \return a reference to the current instance.
+         */
+        FASTAFileReader& operator = (const FASTAFileReader& other) ;
+
         /*!
          * \brief Checks whether sequences are currently considered as 1-based.
          * \return Whether sequences are considered as 1-based (and thus whether
@@ -85,7 +95,7 @@ class FASTAFileReader : public FileReader, SerialReading, SpecificReading
          * \brief This method allows to change the file to which the instance is connected. If
          * the a stream to the previous file was open, it is closed and a new stream to the new
          * file is open. _f_seq, _f_seq_address, _f_seq_open and _one_based_seq are reset
-         * accordingly.
+         * accordingly. Also, the entry map is reset and refilled with new values.
          * \param fasta_file_address the address of the new FASTA file to which the instance
          * should be connected to.
          * \param one_based_seq whether the sequences of this file should be considered as
@@ -155,8 +165,10 @@ class FASTAFileReader : public FileReader, SerialReading, SpecificReading
         /*!
          * \brief This method fills the map of pairs header/file pointers. At return time,
          * the file pointer position is set to the beginning of the file.
+         * \throw std::runtime_error if two entries with a same header are found in the file during
+         * the process.
          */
-        virtual void fillMap() override ;
+        virtual void fill_entry_map() throw (std::runtime_error) override ;
 
         //*** fields ****        
         /*!

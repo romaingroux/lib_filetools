@@ -36,8 +36,15 @@ class SpecificReading
         /*!
          * \brief This method should implement the way the map storing the pairs of header/pointer
          * is filled.
+         * \throw std::runtime_error if two entries with a same header are found in the file during
+         * the process.
          */
-        virtual void fillMap() = 0 ;
+        virtual void fill_entry_map() throw (std::runtime_error) = 0 ;
+
+        /*!
+         * \brief Resets the entry map to an empty map.
+         */
+        void reset_entry_map() ;
 
         /*!
          * \brief Gets the position of the entry having the given header in the file.

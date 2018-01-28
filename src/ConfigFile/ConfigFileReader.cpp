@@ -55,14 +55,14 @@ ConfigFileReader::~ConfigFileReader()
 {}
 
 
-bool ConfigFileReader::has_section(const std::string& section)
+bool ConfigFileReader::has_section(const std::string& section) const
 {  if(this->find_section(section) != this->_map.end())
    {    return true ; }
     return false ;
 }
 
 
-bool ConfigFileReader::has_option(const std::string& section, const std::string& option)
+bool ConfigFileReader::has_option(const std::string& section, const std::string& option) const
 {   if(this->find_option(section, option) != this->_map.end())
     {   return true ; }
     return false ;
@@ -277,12 +277,33 @@ void ConfigFileReader::read_file() throw (std::runtime_error)
 section_map::iterator ConfigFileReader::find_section(const std::string& section)
 {   return this->_map.find(section) ; }
 
+section_map::const_iterator ConfigFileReader::find_section(const std::string& section) const
+{   return this->_map.find(section) ; }
+
 section_map::iterator ConfigFileReader::find_option(const std::string& section, const std::string& option)
 {   // search section
     section_map::iterator s_iter = this->_map.find(section) ;
     // section present -> search option
     if(s_iter != this->_map.end())
     {   option_map::iterator o_iter = (*s_iter).second.find(option) ;
+        // option present
+        if(o_iter != (*s_iter).second.end())
+        {   return s_iter ; }
+        // option absent
+        else
+        {   return this->_map.end() ; }
+    }
+    // section absent -> return map end
+    else
+    {   return this->_map.end() ; }
+}
+
+section_map::const_iterator ConfigFileReader::find_option(const std::string& section, const std::string& option) const
+{   // search section
+    section_map::const_iterator s_iter = this->_map.find(section) ;
+    // section present -> search option
+    if(s_iter != this->_map.end())
+    {   option_map::const_iterator o_iter = (*s_iter).second.find(option) ;
         // option present
         if(o_iter != (*s_iter).second.end())
         {   return s_iter ; }

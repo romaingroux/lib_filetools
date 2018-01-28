@@ -1,5 +1,5 @@
 FileReader
-           1) est-ce que mettre à dispo good(), bad(), fail(), eof() ?
+        OK 1) est-ce que mettre à dispo good(), bad(), fail(), eof() ?
 FASTAFileReader
         OK 1) faire constructeur à partir fichier
         OK 2) utiliser la map
@@ -12,4 +12,4 @@ SpecificReader
 
 ConfigFileReader
 	1) tests
-	2) implémenter les méthodes const
+	OK 2) implémenter les méthodes const

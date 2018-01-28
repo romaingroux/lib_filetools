@@ -35,6 +35,14 @@ class SGAFileReader : public FileReader, SerialReading
         virtual ~SGAFileReader() override ;
 
         /*!
+         * \brief Assignment operator.
+         * \param other another instance to copy the values from during
+         * the assignment.
+         * \return a reference to the current instance.
+         */
+        SGAFileReader& operator = (const SGAFileReader& other) ;
+
+        /*!
          * \brief This method returns the next SGA line
          * in _f_seq compared to the current file pointer
          * position. The returned SGA_element will need to be

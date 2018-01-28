@@ -15,3 +15,7 @@ long long SpecificReading::get_entry_position(const std::string& header) const t
         throw std::runtime_error(msg) ;
     }
 }
+
+
+void SpecificReading::reset_entry_map()
+{   this->_entry_map = std::unordered_map<std::string, long long>() ; }

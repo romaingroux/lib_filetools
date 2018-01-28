@@ -65,6 +65,30 @@ class FileReader
          */
         long long tellg() ;
 
+        /*!
+         * \brief Calls good() on stream.
+         * \return whether goodbit is set
+         */
+        bool good() const ;
+
+        /*!
+         * \brief Calls bad() on stream.
+         * \return whether badbit is set
+         */
+        bool bad() const ;
+
+        /*!
+         * \brief Calls fail() on stream.
+         * \return whether failbit or badbit (or both) is set
+         */
+        bool fail() const ;
+
+        /*!
+         * \brief Calls eof() on stream.
+         * \return whether eofbit is set
+         */
+        bool eof() const ;
+
     protected:
         // *** methods ****
         /*!

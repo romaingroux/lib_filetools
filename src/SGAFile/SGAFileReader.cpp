@@ -4,13 +4,16 @@ SGAFileReader::SGAFileReader()
 { this->_f_open = false ; }
 
 SGAFileReader::SGAFileReader(const std::string& sga_file_address)
-{   this->set_file(sga_file_address) ;
-    // this->_f_address = sga_file_address ;
-    // this->open() ;
-}
+{   this->set_file(sga_file_address) ; }
 
 SGAFileReader::~SGAFileReader()
 {   this->close() ; }
+
+
+SGAFileReader& SGAFileReader::operator = (const SGAFileReader& other)
+{   this->set_file(other.get_file()) ;
+    return *this ;
+}
 
 
 SGA_element* SGAFileReader::get_next() throw (std::runtime_error, std::invalid_argument)

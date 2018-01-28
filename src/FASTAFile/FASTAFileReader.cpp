@@ -12,6 +12,12 @@ FASTAFileReader::~FASTAFileReader()
 {   this->close() ; }
 
 
+FASTAFileReader& FASTAFileReader::operator = (const FASTAFileReader& other)
+{   this->set_file(other.get_file(), other.is_1based(), other.get_alloc_size()) ;
+    return *this ;
+}
+
+
 bool FASTAFileReader::is_1based() const
 {   return this->_one_based_seq ; }
 
@@ -42,8 +48,10 @@ void FASTAFileReader::set_file(const std::string& fasta_file_address, bool one_b
     this->set_alloc_size(sequence_alloc_size) ;
     // modify _f_address and opens it
     FileReader::set_file(fasta_file_address) ;
+    // reset map
+    this->reset_entry_map() ;
     // fills the map
-    this->fillMap() ;
+    this->fill_entry_map() ;
 }
 
 
@@ -120,6 +128,7 @@ FASTA_element* FASTAFileReader::get_next() throw (std::runtime_error, std::inval
     }
     else if(seq_found)
     {   fasta_element->sequence_length = fasta_element->sequence.length() ; }
+
     return fasta_element ;
 }
 
@@ -144,9 +153,8 @@ bool FASTAFileReader::get_sequence(FASTA_element& fasta_element)
     return seq_found ;
 }
 
-// #include <iomanip>
 
-void FASTAFileReader::fillMap()
+void FASTAFileReader::fill_entry_map() throw (std::runtime_error)
 {   // go to file start
     this->seekg(0, std::ios::beg) ;
     char c ;
@@ -159,8 +167,14 @@ void FASTAFileReader::fillMap()
             long long pos = this->tellg() ;
             this->_f.getline(this->_buffer, BUFFER_SIZE) ;
             std::string header(this->_buffer) ;
+            // check this header was not seen before
+            if(this->_entry_map.find(header) != this->_entry_map.end())
+            {   char msg[512] ;
+                sprintf(msg, "FASTAFileReader error! Header %s is present multiple times in %s",
+                        header.c_str(), this->get_file().c_str()) ;
+                throw std::runtime_error(msg) ;
+            }
             this->_entry_map.emplace(header, pos) ;
-            // std::cerr << std::setw(4) << pos << "   " << header << std::endl ;
         }
     }
     // get back to file start
