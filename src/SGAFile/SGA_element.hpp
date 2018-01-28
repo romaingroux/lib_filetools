@@ -41,34 +41,30 @@ class SGA_element : public Data_element
 
         ~SGA_element() ;
 
+
+        // operator overloading
         /*!
-         * \brief chromosome field
+         * \brief Assignment operator.
+         * \param other another instance to copy the values from.
+         * \return a reference to the current instance.
          */
-        std::string chromosome ;
-        /*!
-         * \brief feature field
-         */
-        std::string feature ;
-        /*!
-         * \brief position field
-         */
-        size_t position ;
-        /*!
-         * \brief the strand field
-         */
-        std::string strand ;
-        /*!
-         * \brief the count field
-         */
-        size_t count ;
+        SGA_element& operator = (const SGA_element& other) ;
 
         /*!
-         * \brief Equality operator overload.
+         * \brief Equality operator .
          * \param other an other instance to compare the current one with.
          * \return true if both instances have the same field values, false otherwise.
          */
         bool operator == (const SGA_element& other) const ;
 
+        /*!
+         * \brief Inequality operator.
+         * \param other an other instance to compare the current one with.
+         * \return true if both instances don't have the same field values, false otherwise.
+         */
+        bool operator != (const SGA_element& other) const ;
+
+        // methods
         /*!
          * \brief Return the distance in bp between 2 SGA_element instances. If these instances
          * are not on the same chrosomomes, no distance can be computed and error_byte is
@@ -90,6 +86,28 @@ class SGA_element : public Data_element
          * \return a reference to the stream.
          */
         friend std::ostream& operator << (std::ostream& stream, const SGA_element& sga) ;
+
+        // fields
+        /*!
+         * \brief chromosome field
+         */
+        std::string chromosome ;
+        /*!
+         * \brief feature field
+         */
+        std::string feature ;
+        /*!
+         * \brief position field
+         */
+        size_t position ;
+        /*!
+         * \brief the strand field
+         */
+        std::string strand ;
+        /*!
+         * \brief the count field
+         */
+        size_t count ;
 } ;
 
 #endif // SGA_ELEMENT_H

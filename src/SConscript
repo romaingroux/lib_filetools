@@ -17,7 +17,6 @@ test_src       = Glob("Unittests/*.cpp")
 
 # Source file containing main()
 test_main_src  = Glob("unittests.cpp")
-test_main2_src = Glob("test.cpp")
 
 
 # compilation instructions for every module
@@ -27,11 +26,8 @@ fastafile_obj  = Object(fastafile_src,  CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=l
 configfile_obj = Object(configfile_src, CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
 test_obj       = Object(test_src,       CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
 test_main_obj  = Object(test_main_src,  CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
-test_main2_obj = Object(test_main2_src, CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
 
 # unittest program compilation
-Program("unittests", test_main_obj + test_obj + interfaces_obj + sgafile_obj + fastafile_obj, CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
-# test program compilation
-Program("test", test_main2_obj + interfaces_obj + configfile_obj, CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
+Program("unittests", test_main_obj + test_obj + interfaces_obj + sgafile_obj + fastafile_obj + configfile_obj, CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)
 # static library
 StaticLibrary("FileTools", interfaces_obj + sgafile_obj + fastafile_obj + configfile_obj, CCFLAGS=ccflags, CPPPATH=cpppath, LIBS=libs, LIBPATH=libs_path)

@@ -82,6 +82,15 @@ SGA_element::~SGA_element()
 
 
 // operator overloading
+SGA_element& SGA_element::operator = (const SGA_element& other)
+{   this->chromosome = other.chromosome ;
+    this->feature = other.feature ;
+    this->position = other.position ;
+    this->strand = other.strand ;
+    this->count = other.count ;
+    return *this ;
+}
+
 bool SGA_element::operator == (const SGA_element& other) const
 {   if((this->chromosome).compare(other.chromosome) == 0 &&
        (this->feature).compare(other.feature) == 0 &&
@@ -94,6 +103,10 @@ bool SGA_element::operator == (const SGA_element& other) const
 }
 
 
+bool SGA_element::operator != (const SGA_element& other) const
+{   return not((*this) == other) ; }
+
+
 std::ostream& operator << (std::ostream& stream, const SGA_element& sga)
 {   stream << sga.chromosome << SGA_DELIMITER ;
     stream << sga.feature    << SGA_DELIMITER ;
@@ -104,6 +117,7 @@ std::ostream& operator << (std::ostream& stream, const SGA_element& sga)
 }
 
 
+// methods
 int SGA_element::get_distance(const SGA_element& other, int& error_byte) const
 {   // both aren't on the same chromosome, set error_byte to 1 and return 0
     if(this->chromosome.compare(other.chromosome) != 0)

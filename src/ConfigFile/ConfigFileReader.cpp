@@ -41,18 +41,42 @@ ConfigFileReader::ConfigFileReader()
 {}
 
 
-ConfigFileReader::ConfigFileReader(const std::string& file_adresse)
+ConfigFileReader::ConfigFileReader(const std::string& file_adresse) throw (std::runtime_error)
     : ConfigFileReader()
-{   this->set_file(file_adresse) ;
-    // read file
-    this->read_file() ;
-    // close file
-    this->close() ;
+{   try
+    { this->set_file(file_adresse) ; }
+    catch(std::runtime_error& e)
+    {   throw e ; }
 }
 
 
 ConfigFileReader::~ConfigFileReader()
 {}
+
+
+ConfigFileReader& ConfigFileReader::operator = (const ConfigFileReader& other) throw (std::runtime_error)
+{   try
+    {   this->set_file(other.get_file()) ; }
+    catch(std::runtime_error& e)
+    {   throw e ; }
+    return *this ;
+}
+
+
+void ConfigFileReader::set_file(const std::string& file_address) throw (std::runtime_error)
+{   // reset map content
+    this->reset_map() ;
+    // read file
+    FileReader::set_file(file_address) ;
+    try
+    {   this->read_file() ; }
+    catch(std::runtime_error& e)
+    {   throw e ; }
+    // close file
+    this->close() ;
+}
+
+
 
 
 bool ConfigFileReader::has_section(const std::string& section) const
@@ -68,7 +92,7 @@ bool ConfigFileReader::has_option(const std::string& section, const std::string&
     return false ;
 }
 
-section_map ConfigFileReader::getOptions() const
+section_map ConfigFileReader::get_options() const
 {   return this->_map ; }
 
 
@@ -233,7 +257,8 @@ void ConfigFileReader::read_file() throw (std::runtime_error)
         // TODO -> the current implementation accepts spaces within <option> and <value>
         // but don't read them -> correct to raise an error when this happens?
         else
-        {   option.clear() ; value.clear() ;
+        {
+            option.clear() ; value.clear() ;
             // should contain exactly one '=' char
             size_t first = buffer.find('=') ;
             size_t last  = buffer.rfind('=') ;
@@ -256,6 +281,7 @@ void ConfigFileReader::read_file() throw (std::runtime_error)
                 {   if(buffer[i] != ' ')
                     {   value.push_back(buffer[i]) ; }
                 }
+
                 // store option and value
                 if(this->has_option(section, option))
                 {   char msg[512] ;
@@ -263,13 +289,28 @@ void ConfigFileReader::read_file() throw (std::runtime_error)
                             option.c_str(), section.c_str()) ;
                     throw std::runtime_error(msg) ;
                 }
+                // option has no section (option comes before first
+                // section header in file)
+                else if(section == "")
+                {   char msg[512] ;
+                    sprintf(msg, "ConfigFileReader error! Option %s outside section in %s",
+                            option.c_str(), this->get_file().c_str()) ;
+                    throw std::runtime_error(msg) ;
+                }
                 else
-                {   this->add_new_option(section, option, value) ; }
+                {   // option has no value
+                    if(value == "")
+                    {   value = ConfigFileReader::novalue ; }
+                    this->add_new_option(section, option, value) ;
+                }
             }
         }
     }
 }
 
+
+void ConfigFileReader::reset_map()
+{   this->_map = section_map() ; }
 
 
 
@@ -345,3 +386,8 @@ void ConfigFileReader::add_new_option(const std::string& section, const std::str
         (*s_iter).second.emplace(option, value) ;
     }
 }
+
+
+
+// static member
+std::string ConfigFileReader::novalue = std::string("NO_VALUE") ;

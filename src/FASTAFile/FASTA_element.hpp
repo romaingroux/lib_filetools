@@ -15,17 +15,36 @@
 class FASTA_element : public Data_element
 {
     public:
+
         FASTA_element() ;
+
+        FASTA_element(const std::string& header, const std::string& sequence, bool one_based_seq=false) ;
+
         ~FASTA_element() ;
 
         // **** functions ****
         // operator overloading
+
         /*!
-         * \brief Equality operator overload.
+         * \brief Assignment operator.
+         * \param other another instance to copy the values from.
+         * \return a reference to the current instance.
+         */
+        FASTA_element& operator = (const FASTA_element& other) ;
+
+        /*!
+         * \brief Equality operator.
          * \param other an other instance to compare the current one with.
          * \return true if both instances have the same field values, false otherwise.
          */
         bool operator == (const FASTA_element& other) const ;
+
+        /*!
+         * \brief Inequality operator.
+         * \param other an other instance to compare the current one with.
+         * \return true if both instances don't have the same field values, false otherwise.
+         */
+        bool operator != (const FASTA_element& other) const ;
 
         /*!
          * \brief A friend function which overload the << operator for printing/writting
@@ -57,25 +76,5 @@ class FASTA_element : public Data_element
         size_t sequence_length ;
 } ;
 
-// produces a hash out of the sequence
-/*!
- * \brief A function allowing to compute a hash from a DNA sequence composed
- * of A,C,G,N,T. Other characters can easily be allowed by rewritting the
- * function.
- * \param sequence the sequence of interest.
- * \return the sequence hash.
- */
-size_t hash(const std::string& sequence) ;
-
-/*!
- * \brief A function allowing to compute a hash from a DNA sequence composed of A,C,G,N,T. Other
- * characters can easily be allowed by rewritting the function.
- * \param iter a constant iterator on a string containing the sequence. The iterator should point
- * to the first postion of interest of the sequence.
- * \param length the lenght of the sequence. The sequence is delimited in the string using <iter>
- * and <length>.
- * \return the sequence hash.
- */
-size_t hash(std::string::const_iterator iter, size_t length) ;
 
 #endif // FASTA_ELEMENT_H

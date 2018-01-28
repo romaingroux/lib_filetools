@@ -92,6 +92,8 @@ FASTA_element* FASTAFileReader::get_next() throw (std::runtime_error, std::inval
         throw std::runtime_error(msg) ;
     }
     // value to be returned
+    // directly put the read data into the FASTA_element in order to avoid large memory
+    // consumption with really large sequences.
     FASTA_element* fasta_element = nullptr ;
     bool header_found = false ;
     bool seq_found = false ;
