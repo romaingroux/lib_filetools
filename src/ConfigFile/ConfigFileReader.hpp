@@ -33,13 +33,14 @@ bool stobool(const std::string& s) throw (std::invalid_argument) ;
 
 
 class ConfigFileReader : public FileReader
-{   // static member
-    public:
+{    public:
+        // static member
         /*!
          * \brief a special value attributed to options for which not value
          * could be found within the file.
          */
         static std::string novalue ;
+
 
     public:
         ConfigFileReader() ;
@@ -91,12 +92,56 @@ class ConfigFileReader : public FileReader
          */
         bool has_option(const std::string& section, const std::string& option) const ;
 
+        /*!
+         * \brief Returns the unordered map with all sections and options.
+         * \return a copy of the unordered map with all sections and options.
+         */
         section_map get_options() const ;
 
+        /*!
+         * \brief Gets the value corresponding to the given option value in the given
+         * section, as a string.
+         * \param section the section of interest.
+         * \param options the option of interest.
+         * \throw std::runtime_error if no such section nor option could be found.
+         * \return a string corresponding to the value of to the given option in the given
+         * section
+         */
         std::string getString(const std::string& section, const std::string& options) throw(std::runtime_error) ;
-        double      getDouble(const std::string& section, const std::string& options) throw(std::runtime_error) ;
-        int         getInt(const std::string& section, const std::string& options) throw(std::runtime_error) ;
-        bool        getBool(const std::string& section, const std::string& options) throw(std::runtime_error, std::invalid_argument) ;
+
+        /*!
+         * \brief Gets the value corresponding to the given option value in the given
+         * section, as a double.
+         * \param section the section of interest.
+         * \param options the option of interest.
+         * \throw std::runtime_error if no such section nor option could be found.
+         * \return a double corresponding to the value of the given option in the given
+         * section
+         */
+        double getDouble(const std::string& section, const std::string& options) throw(std::runtime_error) ;
+
+        /*!
+         * \brief Gets the value corresponding to the given option value in the given
+         * section, as an integer.
+         * \param section the section of interest.
+         * \param options the option of interest.
+         * \throw std::runtime_error if no such section nor option could be found.
+         * \return an integer corresponding to the value of the given option in the given
+         * section
+         */
+        int getInt(const std::string& section, const std::string& options) throw(std::runtime_error) ;
+
+        /*!
+         * \brief Gets the value corresponding to the given option value in the given
+         * section, as a boolean. The conversion is done using stobool().
+         * \param section the section of interest.
+         * \param options the option of interest.
+         * \throw std::runtime_error if no such section nor option could be found or
+         * std::invalid_argument if stobool could not properly convert the value.
+         * \return an integer corresponding to the value of the given option in the given
+         * section
+         */
+        bool getBool(const std::string& section, const std::string& options) throw(std::runtime_error, std::invalid_argument) ;
 
         /* makes no sense to keep them, stream is always read at once at construct time and
          * closed straight after */
@@ -107,14 +152,71 @@ class ConfigFileReader : public FileReader
 
     private:
         // *** methods ***
+        /*!
+         * \brief Routine reading the config file and storing all the values in the map.
+         * \throw std::runtime_error if i) two section with the same name are found, ii)
+         * two options with the same name in the same section are found or iii) an
+         * option before the first section is found.
+         */
         void read_file() throw (std::runtime_error) ;
+        /*!
+         * \brief Resets the map to an empty unordered map of sections.
+         */
         void reset_map() ;
+
+        /*!
+         * \brief Performs a search operation in the map to find a given section.
+         * \param section a section of interest.
+         * \return an iterator to the given bucket if the section was found, _map::end()
+         * otherwise.
+         */
         section_map::iterator find_section(const std::string& section) ;
-        section_map::const_iterator find_section(const std::string& section) const ; // todo
+        /*!
+         * \brief Performs a search operation in the map to find a given section.
+         * \param section a section of interest.
+         * \return an iterator to the given bucket if the section was found, _map::end()
+         * otherwise.
+         */
+        section_map::const_iterator find_section(const std::string& section) const ;
+
+        /*!
+         * \brief Performs a search operation in the map to find a given option in
+         * a given section.
+         * \param section a section of interest.
+         * \param option an option of interest.
+         * \return an iterator to the given section bucket (not to the option bucket) if the section
+         * was found, _map::end() otherwise.
+         */
         section_map::iterator find_option(const std::string& section, const std::string& option) ;
+
+        /*!
+         * \brief Performs a search operation in the map to find a given option in
+         * a given section.
+         * \param section a section of interest.
+         * \param option an option of interest.
+         * \return an iterator to the given section bucket (not to the option bucket) if the section
+         * was found, _map::end() otherwise.
+         */
         section_map::const_iterator find_option(const std::string& section, const std::string& option) const ; // todo
+
+        /*!
+         * \brief Emplace a new section bucket for a given section in _map. If a bucket for the
+         * given section already exists, nothing is done.
+         * \param section a section of interest.
+         */
         void add_new_section(const std::string& section) ;
+
+        /*!
+         * \brief Emplace a new option bucket (option-value) for a given option in a given section in _map.
+         * If there is no bucket for the section already, one is created. If there is not bucket
+         * for the option in the section bucket, one is created. If there is already an option
+         * bucket in the section bucket, the option value is over-written.
+         * \param section a section of interest.
+         * \param option an option of interest.
+         * \param value the value associated to the option.
+         */
         void add_new_option(const std::string& section, const std::string& option, const std::string& value) ;
+
         // *** fields ***
         section_map _map ; // all sections are contained within one map with all their options
 } ;
