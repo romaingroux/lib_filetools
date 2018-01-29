@@ -135,13 +135,6 @@ FASTA_element* FASTAFileReader::get_next() throw (std::runtime_error, std::inval
 }
 
 
-bool FASTAFileReader::matchesPattern(const std::string& candidate, const std::string& pattern) const
-{   if(candidate == pattern)
-    {   return true ; }
-    return false ;
-}
-
-
 bool FASTAFileReader::get_sequence(FASTA_element& fasta_element)
 {
     // before reading, check that the next character to be read from the file is not a header,

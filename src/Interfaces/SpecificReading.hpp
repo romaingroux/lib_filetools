@@ -25,15 +25,6 @@ class SpecificReading
 
     protected:
         /*!
-         * \brief This method should implement a test to check whether a string matches
-         * a given pattern.
-         * \param candidate the entry header to check for the pattern.
-         * \param pattern a pattern to search in the file entry headers.
-         * \return whether the candidate matches the pattern.
-         */
-        virtual bool matchesPattern(const std::string& candidate, const std::string& pattern) const = 0 ;
-
-        /*!
          * \brief This method should implement the way the map storing the pairs of header/pointer
          * is filled.
          * \throw std::runtime_error if two entries with a same header are found in the file during

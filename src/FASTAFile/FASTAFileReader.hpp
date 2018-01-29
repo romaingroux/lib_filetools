@@ -114,8 +114,7 @@ class FASTAFileReader : public FileReader, SerialReading, SpecificReading
 
         /*!
          * \brief  This method searches an entry in the stream having a header corresponding to one
-         *  given as argument and return the corresponding entry if one is foudn. The header/pattern
-         * comparison is performed by the matchesPattern() method.
+         *  given as argument and return the corresponding entry if one is found.
          * Also, this method guarantees that after a call, the file pointer position is restored to
          * the same position as it was before the call. However, the stream state is not preserved
          * (the method calls seekg() which calls clear() on the stream). If the file pointer was at
@@ -153,14 +152,6 @@ class FASTAFileReader : public FileReader, SerialReading, SpecificReading
          * '>' character).
          */
         bool get_sequence(FASTA_element& fasta_element) ;
-
-        /*!
-         * \brief Checks whether candidate fasta header exactly matches a given pattern.
-         * \param candidate the fasta header of interest.
-         * \param pattern a pattern to check candidate against.
-         * \return whether the header exactly matches the pattern.
-         */
-        virtual bool matchesPattern(const std::string& candidate, const std::string& pattern) const override ;
 
         /*!
          * \brief This method fills the map of pairs header/file pointers. At return time,
