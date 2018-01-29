@@ -31,7 +31,31 @@ std::ostream& operator << (std::ostream& o, const section_map& map) ;
 bool stobool(const std::string& s) throw (std::invalid_argument) ;
 
 
-
+/*!
+ * \brief The ConfigFileReader class is designed to parse and retrieve information from .ini
+ * configuration files. In short, these files are divided in sections which starts with a
+ * header formatted as '[section_title]'. Then, each section can contains an unspecified
+ * number of different options-values pairs (each pair on a single line). Here is an
+ * example of proper file
+ * --------------
+ * [section1]
+ * opt1 = 1
+ * opt2 = mystring
+ * opt3 = 1.3
+ * [section2]
+ * my_opt = true
+ * --------------
+ * The file will be read at once by the parser and all the option-value pairs will be stored
+ * within an unordered_map (sections) of unordered_map (option-value pairs). All values are
+ * stored as strings but can be retrieved as int, double, bool or strings. Any value can
+ * always be retrieved as a string. However, not all value can be converted to int, double
+ * or bool. Typically, any string will be converted as a bool with value true except "". But
+ * this makes little sense. On the other side, "on"/"off", "On"/"Off", "true"/"false", "True"/
+ * "False" and "1"/"0" strings are correctly converted into bool.
+ * For convertion to int or to double, strings containing numerical expressions should be used.
+ * For instance "1" can be converted to int and to double easily. ".1" will be easily converted
+ * to double but not to int. For any other expression, the behaviour is unknown.
+ */
 class ConfigFileReader : public FileReader
 {    public:
         // static member
