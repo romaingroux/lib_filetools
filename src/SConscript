@@ -1,5 +1,5 @@
 # compilation flags
-ccflags = "-std=c++11 -O2 -Wall -Wextra -Werror -Wfatal-errors -pedantic -I ./res/include"
+ccflags = "-std=c++11 -O2 -Wall -Wextra -Werror -Wfatal-errors -pedantic"
 
 # a path which should be added to all include directive to make them correct
 cpppath = "../src/"
