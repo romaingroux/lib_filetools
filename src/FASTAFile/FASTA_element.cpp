@@ -1,4 +1,4 @@
-#include "FASTAFile/FASTA_element.hpp"
+#include "include/FASTA_element.hpp"
 
 FASTA_element::FASTA_element()
     : sequence_one_based(false), sequence_length(0)

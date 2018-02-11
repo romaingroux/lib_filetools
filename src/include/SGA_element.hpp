@@ -3,7 +3,7 @@
 
 #define SGA_DELIMITER '\t'
 
-#include "Interfaces/Data_element.hpp"
+#include "Data_element.hpp"
 #include <stdlib.h>
 #include <string>
 #include <sstream>

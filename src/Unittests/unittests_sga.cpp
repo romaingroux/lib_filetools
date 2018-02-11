@@ -3,9 +3,8 @@
 #include <string>
 #include <stdexcept>
 
-
-#include "SGAFile/SGA_element.hpp"
-#include "SGAFile/SGAFileReader.hpp"
+#include "include/SGA_element.hpp"
+#include "include/SGAFileReader.hpp"
 
 
 // SGA_element unittests

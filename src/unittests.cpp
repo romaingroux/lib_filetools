@@ -4,11 +4,11 @@
 #include <stdexcept>
 
 
-#include "FASTAFile/FASTA_element.hpp"
-#include "FASTAFile/FASTAFileReader.hpp"
+#include "include/FASTA_element.hpp"
+#include "include/FASTAFileReader.hpp"
 
-#include "SGAFile/SGA_element.hpp"
-#include "SGAFile/SGAFileReader.hpp"
+#include "include/SGA_element.hpp"
+#include "include/SGAFileReader.hpp"
 
 
 

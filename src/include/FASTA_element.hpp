@@ -1,7 +1,7 @@
 #ifndef FASTA_ELEMENT_H
 #define FASTA_ELEMENT_H
 
-#include "Interfaces/Data_element.hpp"
+#include "Data_element.hpp"
 #include <iostream>
 #include <string>
 #include <cmath>

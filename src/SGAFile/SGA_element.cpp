@@ -1,4 +1,4 @@
-#include "SGAFile/SGA_element.hpp"
+#include "include/SGA_element.hpp"
 
 SGA_element::SGA_element()
 {   this->chromosome = std::string() ;

@@ -1,4 +1,4 @@
-#include "Interfaces/SpecificReading.hpp"
+#include "include/SpecificReading.hpp"
 
 
 SpecificReading::~SpecificReading()

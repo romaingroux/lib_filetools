@@ -3,8 +3,8 @@
 #include <string>
 #include <stdexcept>
 
-#include "FASTAFile/FASTA_element.hpp"
-#include "FASTAFile/FASTAFileReader.hpp"
+#include "include/FASTA_element.hpp"
+#include "include/FASTAFileReader.hpp"
 
 
 // FASTA_element unittests

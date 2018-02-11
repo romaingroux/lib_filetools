@@ -1,4 +1,4 @@
-#include "ConfigFile/ConfigFileReader.hpp"
+#include "include/ConfigFileReader.hpp"
 
 
 std::ostream& operator << (std::ostream& o, const section_map& map)

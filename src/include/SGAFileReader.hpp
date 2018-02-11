@@ -7,9 +7,9 @@
 #include <stdexcept>
 
 #include "SGA_element.hpp"
-#include "Interfaces/Data_element.hpp"
-#include "Interfaces/FileReader.hpp"
-#include "Interfaces/SerialReading.hpp"
+#include "Data_element.hpp"
+#include "FileReader.hpp"
+#include "SerialReading.hpp"
 
 
 /*!

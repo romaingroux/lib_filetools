@@ -1,4 +1,4 @@
-#include "FASTAFile/FASTAFileReader.hpp"
+#include "include/FASTAFileReader.hpp"
 
 FASTAFileReader::FASTAFileReader()
 {   this->_f_open = false ; }

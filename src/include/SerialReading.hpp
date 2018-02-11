@@ -2,7 +2,7 @@
 #define SERIALREADING_H
 
 #include <stdexcept>
-#include "Interfaces/Data_element.hpp"
+#include "Data_element.hpp"
 
 class SerialReading
 {   public:

@@ -1,4 +1,4 @@
-#include "SGAFile/SGAFileReader.hpp"
+#include "include/SGAFileReader.hpp"
 
 SGAFileReader::SGAFileReader()
 { this->_f_open = false ; }

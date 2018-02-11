@@ -6,11 +6,11 @@
 #include <iostream>
 #include <fstream>
 
-#include "Interfaces/FileReader.hpp"
-#include "FASTAFile/FASTA_element.hpp"
-#include "Interfaces/Data_element.hpp"
-#include "Interfaces/SerialReading.hpp"
-#include "Interfaces/SpecificReading.hpp"
+#include "FileReader.hpp"
+#include "FASTA_element.hpp"
+#include "Data_element.hpp"
+#include "SerialReading.hpp"
+#include "SpecificReading.hpp"
 
 
 // for file reading
