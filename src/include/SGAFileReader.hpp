@@ -32,6 +32,9 @@ class SGAFileReader : public FileReader, SerialReading
          */
         SGAFileReader(const std::string& sga_file_address) ;
 
+	/*!
+         * \brief Destructor. Closes the file.
+         */
         virtual ~SGAFileReader() override ;
 
         /*!

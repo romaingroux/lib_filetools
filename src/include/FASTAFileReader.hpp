@@ -51,6 +51,9 @@ class FASTAFileReader : public FileReader, SerialReading, SpecificReading
          */
         FASTAFileReader(const std::string& fasta_file_address, bool one_based_seq=false, size_t sequence_alloc_size=1000) ;
 
+        /*!
+         * \brief Destructor. Closes the file.
+         */
         virtual ~FASTAFileReader() override ;
 
         /*!
